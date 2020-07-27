@@ -1,0 +1,15 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.test {
+  @apply p-4 shadow rounded bg-white;
+}
+
+.header {
+  @apply text-purple-800 text-2xl leading-normal;
+}
+
+.sub {
+  @apply text-gray-500;
+}
