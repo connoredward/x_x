@@ -1,4 +1,7 @@
 import fetch from 'isomorphic-unfetch';
+import config from '../config/var';
+
+const apiUrl = config.api.prod;
 
 type Props = {
   item: {
@@ -7,7 +10,7 @@ type Props = {
 };
 
 export const getAllProjects = async (): Promise<[] | undefined> => {
-  const response = await fetch('http://localhost:8080/getAllProjects', {
+  const response = await fetch(apiUrl + 'getAllProjects', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -15,7 +18,7 @@ export const getAllProjects = async (): Promise<[] | undefined> => {
 };
 
 export const createProject = async ({ item }: Props): Promise<void> => {
-  const response = await fetch('http://localhost:8080/createProject', {
+  const response = await fetch(apiUrl + 'createProject', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ item }),

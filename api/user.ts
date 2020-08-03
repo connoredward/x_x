@@ -1,4 +1,7 @@
 import fetch from 'isomorphic-unfetch';
+import config from '../config/var';
+
+const apiUrl = config.api.prod;
 
 type Props = {
   newUser: {
@@ -19,7 +22,7 @@ export const createNewUser = (newUser: {
   password: string;
   email: string;
 }): Promise<string | void> => {
-  return fetch('http://localhost:8080/createUser', {
+  return fetch(apiUrl + 'createUser', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newUser),
@@ -33,7 +36,7 @@ export const createNewUser = (newUser: {
 };
 
 export const loginUser = (userDetails: { email: string; password: string }): Promise<boolean | void> => {
-  return fetch('http://localhost:8080/authenticate', {
+  return fetch(apiUrl + 'authenticate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userDetails),
