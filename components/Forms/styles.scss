@@ -1,0 +1,98 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+// CREATE USER FORM
+.create_user_form {
+  @apply w-full max-w-lg z-50;
+
+  .name_credentials {
+    @apply flex -mx-3 mb-6;
+
+    .first_name {
+      // md:w-1/2 px-3 mb-6 md:mb-0
+      @apply w-full;
+
+      >label {
+        @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
+      }
+
+      >input {
+        @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight;
+
+        &:focus {
+          @apply outline-none bg-white;
+        }
+      }
+
+      >p {
+        @apply text-red-500 text-xs italic;
+      }
+    }
+
+    .last_name {
+      @apply w-full;
+
+      >label {
+        @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
+      }
+
+      >input {
+        @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight;
+
+        &:focus {
+          @apply outline-none bg-white border-gray-500;
+        }
+      }
+    }
+  }
+
+  .main_row {
+    @apply flex flex-wrap -mx-3 mb-6;
+
+    >div {
+      @apply w-full px-3;
+    }
+
+    label {
+      @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
+    }
+
+    input {
+      @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight;
+
+      &:focus {
+        @apply outline-none bg-white border-gray-500;
+      }
+    }
+
+    p {
+      @apply text-gray-600 text-xs italic;
+    }
+  }
+}
+
+
+
+.create_form {
+  @apply w-full max-w-sm self-center;
+
+  .container {
+    @apply flex items-center border-b border-b-2 border-teal-500 py-2;
+
+    .input {
+      @apply appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight;
+    }
+
+    .input:focus {
+      @apply outline-none;
+    }
+
+    .button {
+      @apply flex-shrink-0 bg-teal-500 border-teal-500 text-sm border-4 text-white py-1 px-2 rounded;
+    }
+
+    .button:hover {
+      @apply bg-teal-700 border-teal-700;
+    }
+  }
+}

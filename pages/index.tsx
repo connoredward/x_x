@@ -1,5 +1,13 @@
-import App from '@components/App/App';
+import { useEffect } from 'react';
 
-const Main: React.FunctionComponent = () => <App />;
+import Navigation from '@components/Navigation';
+
+const Main: React.FC = () => {
+  return (
+    <div>
+      <Navigation />
+    </div>
+  );
+};
 
 export default Main;

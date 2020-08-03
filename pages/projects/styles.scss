@@ -1,0 +1,6 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+.content_wrapper {
+  @apply py-24;
+}

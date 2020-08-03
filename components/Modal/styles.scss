@@ -1,0 +1,103 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+.modal_wrapper {
+  @apply hidden fixed w-full h-full top-0 left-0 items-center justify-center z-50;
+
+  &.active {
+    @apply flex;
+  }
+
+  .modal_overlay {
+    @apply absolute w-full h-full bg-gray-900 opacity-50;
+  }
+
+  .modal_container {
+    // md: max-w-md
+    @apply bg-white w-1/2 mx-auto rounded shadow-lg z-50 overflow-y-auto;
+
+    .modal_close {
+      @apply absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50;
+
+      >svg {
+        @apply fill-current text-white;
+      }
+
+      >span {
+        @apply text-sm;
+      }
+    }
+
+    .modal_content {
+      @apply py-4 text-left px-6;
+
+      .content_title {
+        @apply flex justify-between items-center pb-3;
+
+        >p {
+          @apply text-2xl font-bold;
+        }
+
+        .icon {
+          @apply cursor-pointer z-50;
+
+          >svg {
+            @apply fill-current text-black;
+          }
+        }
+      }
+
+      .modal_body {}
+
+      .modal_footer {
+        @apply flex justify-end pt-2;
+
+        .primary_btn {
+          // @apply px-4 bg-transparent p-3 rounded-lg text-indigo-500 mr-2;
+          @apply flex rounded-md shadow-sm px-1;
+
+          >button {
+            // sm:text-sm sm:leading-5
+            @apply rounded-md border border-transparent px-4 py-2 bg-red-600 text-base leading-6 font-medium text-white shadow-sm;
+
+            &:focus {
+              // shadow-outline-red
+              @apply outline-none border-red-700 transition ease-in-out duration-150;
+            }
+
+            &:hover {
+              @apply bg-red-500;
+            }
+          }
+
+          // &:hover {
+          //   @apply bg-gray-100 text-indigo-400;
+          // }
+        }
+
+        .cancel_btn {
+          // @apply px-4 bg-indigo-500 p-3 rounded-lg text-white;
+          @apply flex rounded-md shadow-sm px-1;
+
+          >button {
+            // sm:text-sm sm:leading-5
+            @apply inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm;
+
+            &:focus {
+              // shadow-outline-blue
+              @apply outline-none border-blue-300 transition ease-in-out duration-150;
+            }
+
+            &:hover {
+              @apply text-gray-500;
+            }
+          }
+
+          // &:hover {
+          //   @apply bg-indigo-400;
+          // }
+        }
+      }
+    }
+  }
+}

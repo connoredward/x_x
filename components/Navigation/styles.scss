@@ -1,0 +1,116 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+.navigation_wrapper {
+  @apply shadow fixed w-full bg-white;
+
+  >div {
+
+    // @apply max-w-7xl mx-auto px-4 sm: px-6 lg:px-8;
+    @apply px-4;
+
+    .nav_container {
+      @apply flex items-center justify-between h-16;
+
+      .menu_wrapper {
+        @apply flex items-center;
+
+        .logo_wrapper {
+          @apply flex-shrink-0;
+
+          >img {
+            @apply h-8 w-8;
+          }
+        }
+
+        .buttons_wrapper {
+
+          // "hidden md:block"
+          // @apply hidden;
+          >div {
+            @apply ml-10 flex items-baseline;
+
+            >a:focus {
+              @apply outline-none text-white;
+            }
+
+            .main_btn {
+              @apply px-3 py-2 rounded-md text-sm font-medium text-black;
+            }
+
+            .sub_btn {
+              @apply ml-4 px-3 py-2 rounded-md text-sm font-medium text-black border;
+
+              &:hover {
+                @apply text-black bg-gray-100;
+              }
+            }
+          }
+
+        }
+      }
+    }
+
+    .profile_wrapper {
+      .profile_icon {
+        // md:ml-6
+        @apply ml-4 flex items-center;
+
+        >button {
+          @apply p-1 border-2 border-transparent text-gray-400 rounded-full;
+
+          &:hover {
+            @apply text-white;
+          }
+
+          &:focus {
+            @apply outline-none text-white bg-gray-700;
+          }
+        }
+      }
+    }
+  }
+
+  .profile_dropdown {
+    @apply ml-3 relative;
+
+    button {
+      @apply max-w-xs flex items-center text-sm rounded-full text-white;
+
+      &:focus {
+        @apply outline-none;
+        // @apply shadow-solid;
+      }
+
+      >img {
+        @apply h-8 w-8 rounded-full;
+      }
+    }
+
+    .link_wrapper {
+      @apply hidden;
+      @apply origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg;
+
+      &.active {
+        @apply block;
+      }
+
+      >div {
+        @apply py-1 rounded-md bg-white shadow-xs;
+
+        >button {
+          @apply rounded-t-none rounded-b-none text-left;
+        }
+
+        >a,
+        >button {
+          @apply w-full block px-4 py-2 text-sm text-gray-700;
+
+          &:hover {
+            @apply bg-gray-100;
+          }
+        }
+      }
+    }
+  }
+}

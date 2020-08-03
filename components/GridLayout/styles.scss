@@ -1,0 +1,10 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+.grid_wrapper {
+  @apply px-10 py-10;
+
+  >div {
+    @apply flex flex-wrap -mb-4;
+  }
+}
