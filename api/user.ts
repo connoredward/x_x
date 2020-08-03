@@ -58,7 +58,7 @@ export const loginUser = (userDetails: { email: string; password: string }): Pro
 };
 
 export const signOutUser = (): Promise<boolean | void> => {
-  return fetch('http://localhost:8080/signOut', {
+  return fetch(apiUrl + 'signOut', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
