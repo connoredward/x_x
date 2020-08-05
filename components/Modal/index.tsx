@@ -36,14 +36,14 @@ const Modal: React.FC<any> = ({ active, close, children }: Props) => (
         <div className={styles['modal_body']}>{children}</div>
 
         {/* <!--Footer--> */}
-        <div className={styles['modal_footer']}>
+        {/* <div className={styles['modal_footer']}>
           <span className={styles['primary_btn']}>
             <button>Action</button>
           </span>
           <span className={styles['cancel_btn']} onClick={() => close()}>
             <button>Close</button>
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   </div>

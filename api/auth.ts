@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import config from '../config/var';
 
-const apiUrl = config.api.prod;
+const apiUrl = config.api.dev;
 
 export const checkToken = (): Promise<void | boolean> => {
   return fetch(apiUrl + 'checkToken', {

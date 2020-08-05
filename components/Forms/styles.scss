@@ -3,7 +3,7 @@
 
 // CREATE USER FORM
 .create_user_form {
-  @apply w-full max-w-lg z-50;
+  @apply w-full z-50;
 
   .name_credentials {
     @apply flex -mx-3 mb-6;
@@ -67,6 +67,56 @@
 
     p {
       @apply text-gray-600 text-xs italic;
+    }
+  }
+
+  .modal_footer {
+    @apply flex justify-end pt-2;
+
+    .primary_btn {
+      // @apply px-4 bg-transparent p-3 rounded-lg text-indigo-500 mr-2;
+      @apply flex rounded-md shadow-sm px-1;
+
+      >button {
+        // sm:text-sm sm:leading-5
+        @apply rounded-md border border-transparent px-4 py-2 bg-red-600 text-base leading-6 font-medium text-white shadow-sm;
+
+        &:focus {
+          // shadow-outline-red
+          @apply outline-none border-red-700 transition ease-in-out duration-150;
+        }
+
+        &:hover {
+          @apply bg-red-500;
+        }
+      }
+
+      // &:hover {
+      //   @apply bg-gray-100 text-indigo-400;
+      // }
+    }
+
+    .cancel_btn {
+      // @apply px-4 bg-indigo-500 p-3 rounded-lg text-white;
+      @apply flex rounded-md shadow-sm px-1;
+
+      >button {
+        // sm:text-sm sm:leading-5
+        @apply inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm;
+
+        &:focus {
+          // shadow-outline-blue
+          @apply outline-none border-blue-300 transition ease-in-out duration-150;
+        }
+
+        &:hover {
+          @apply text-gray-500;
+        }
+      }
+
+      // &:hover {
+      //   @apply bg-indigo-400;
+      // }
     }
   }
 }

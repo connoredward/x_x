@@ -61,8 +61,13 @@ const CreateUserForm: React.FC = () => {
         </div>
       </div>
 
-      <div>
-        <button type="submit">Submit</button>
+      <div className={styles['modal_footer']}>
+        <span className={styles['primary_btn']}>
+          <button type="submit">Action</button>
+        </span>
+        <span className={styles['cancel_btn']} onClick={() => close()}>
+          <button>Close</button>
+        </span>
       </div>
     </form>
   );
