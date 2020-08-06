@@ -8,8 +8,6 @@ import SplashScreen from '@components/Splash';
 import { loginUser } from '../../api/user';
 import { checkToken } from '../../api/auth';
 
-import LOGO_IMG from '../../static/images/happy-bunch.png';
-
 import styles from './styles.scss';
 
 const CreateUserModal: React.FC = () => {
@@ -59,7 +57,7 @@ const Login: React.FC = () => {
       <SplashScreen hide={hide} />
       <div className={styles['content_header']}>
         <div>
-          <img src={LOGO_IMG} />
+          <img src="../../static/images/happy-bunch.png" />
           <h2>Sign in to your account</h2>
           {/* USER CREATE MODAL */}
           <div className={styles['button_wrapper']}>
