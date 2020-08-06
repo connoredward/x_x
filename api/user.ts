@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-unfetch';
 import config from '../config/var';
 
-const apiUrl = config.api.dev;
+const apiUrl = config.api.prod;
 
 type Props = {
   newUser: {
