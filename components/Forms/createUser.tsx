@@ -4,7 +4,11 @@ import { createNewUser } from '../../api/user';
 
 import styles from './styles.scss';
 
-const CreateUserForm: React.FC = () => {
+type Props = {
+  close: () => void;
+};
+
+const CreateUserForm: React.FC<any> = ({ close }: Props) => {
   const [value, setValue] = useState({
     firstName: '',
     lastName: '',
@@ -15,6 +19,7 @@ const CreateUserForm: React.FC = () => {
   async function handleSubmit(event) {
     event.preventDefault();
     const e = await createNewUser(value);
+    close();
     console.log('a return value', e);
   }
 
@@ -66,7 +71,7 @@ const CreateUserForm: React.FC = () => {
           <button type="submit">Action</button>
         </span>
         <span className={styles['cancel_btn']} onClick={() => close()}>
-          <button>Close</button>
+          <button onClick={close}>Close</button>
         </span>
       </div>
     </form>

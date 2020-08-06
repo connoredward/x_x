@@ -19,7 +19,7 @@ const CreateUserModal: React.FC = () => {
     <>
       <button onClick={() => setModalActive(!modalActive)}>start your 14-day free trial</button>
       <Modal active={modalActive} close={() => setModalActive(false)}>
-        <CreateUserForm />
+        <CreateUserForm close={() => setModalActive(false)} />
       </Modal>
     </>
   );
