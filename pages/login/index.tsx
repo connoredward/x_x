@@ -59,6 +59,7 @@ const Login: React.FC = () => {
         <div>
           <img src="../../static/images/happy-bunch.png" />
           <h2>Sign in to your account</h2>
+
           {/* USER CREATE MODAL */}
           <div className={styles['button_wrapper']}>
             <p>Or</p>
