@@ -6,9 +6,10 @@ type Props = {
   title: string;
   _id: string;
   img: string;
+  slug: string;
 };
 
-const ProjectCard: React.FC<any> = ({ title, _id, img }: Props) => {
+const ProjectCard: React.FC<any> = ({ title, _id, img, slug }: Props) => {
   async function deleteProj() {
     const response = await deleteProject({ _id });
   }
@@ -24,6 +25,7 @@ const ProjectCard: React.FC<any> = ({ title, _id, img }: Props) => {
           eaque, exercitationem praesentium nihil.
         </p>
       </div>
+      <a href={`/projects/${_id}`}>EDIT</a>
       <div className={styles['card_sub_content']}>
         <span>#photography</span>
         <span>#travel</span>

@@ -123,26 +123,41 @@
 
 
 
-.create_form {
-  @apply w-full max-w-sm self-center;
-
-  .container {
-    @apply flex items-center border-b border-b-2 border-teal-500 py-2;
-
-    .input {
-      @apply appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight;
+.create_project_form {
+  .main_row {
+    label {
+      @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
     }
 
-    .input:focus {
-      @apply outline-none;
-    }
+    input {
+      @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight;
 
-    .button {
-      @apply flex-shrink-0 bg-teal-500 border-teal-500 text-sm border-4 text-white py-1 px-2 rounded;
+      &:focus {
+        @apply outline-none bg-white border-gray-500;
+      }
     }
+  }
 
-    .button:hover {
-      @apply bg-teal-700 border-teal-700;
+  .file_uploader {
+    @apply uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 py-4;
+  }
+
+  .primary_btn {
+    // @apply px-4 bg-transparent p-3 rounded-lg text-indigo-500 mr-2;
+    @apply rounded-md shadow-sm px-1;
+
+    >button {
+      // sm:text-sm sm:leading-5
+      @apply rounded-md border border-transparent px-4 py-2 bg-red-600 text-base leading-6 font-medium text-white shadow-sm;
+
+      &:focus {
+        // shadow-outline-red
+        @apply outline-none border-red-700 transition ease-in-out duration-150;
+      }
+
+      &:hover {
+        @apply bg-red-500;
+      }
     }
   }
 }

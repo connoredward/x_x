@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 
 .splash_screen {
-  @apply fixed h-full w-full bg-white flex justify-center items-center z-50;
+  @apply absolute inset-0 h-full w-full bg-white flex justify-center items-center z-50;
 
   &.hide {
     @apply hidden;

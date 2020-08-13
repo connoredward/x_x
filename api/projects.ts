@@ -10,15 +10,17 @@ type Props = {
   };
 };
 
-export const getAllProjects = async (): Promise<[] | undefined> => {
-  const response = await fetch(apiUrl + 'getAllProjects', {
+export const getAllProjects = async (): Promise<
+  [{ slug: string; _id: string; imgFile: string; title: string }] | undefined
+> => {
+  const response = await fetch(apiUrl + 'getProject', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
   return await response.json();
 };
 
-export const createProject = async ({ item }: Props): Promise<void> => {
+export const createProject = async ({ item }: Props): Promise<void | boolean> => {
   const files = item.imgFile;
   const formData = new FormData();
   formData.append('title', item.title);
@@ -29,6 +31,7 @@ export const createProject = async ({ item }: Props): Promise<void> => {
   const response = await fetch(apiUrl + 'createProject', {
     method: 'POST',
     // headers: { 'Content-Type': 'application/json' },
+    // headers: { 'Content-Type': 'multipart/form-data' },
     body: formData,
   });
   return await response.json();

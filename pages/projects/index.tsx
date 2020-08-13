@@ -1,29 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { GetStaticProps } from 'next';
+import fetch from 'isomorphic-unfetch';
 
 import Navigation from '@components/Navigation';
 import GridLayout from '@components/GridLayout';
-import Modal from '@components/Modal';
-import CreateForm from '@components/Forms/createProject';
 import ProjectCard from '@components/Cards/projectCard';
 import SplashScreen from '@components/Splash';
 
 import { getAllProjects } from '../../api/projects';
 import { checkToken } from '../../api/auth';
+import { Project } from '../../interfaces';
 
-import styles from './styles.scss';
-
-const CreateModal: React.FC = () => {
-  const [modalActive, setModalActice] = useState(false);
-
-  return (
-    <>
-      <button onClick={() => setModalActice(!modalActive)}>Add project ...</button>
-      <Modal active={modalActive} close={() => setModalActice(false)}>
-        <CreateForm />
-      </Modal>
-    </>
-  );
+type Props = {
+  items?: Project;
 };
 
 const Projects: React.FC = () => {
@@ -34,6 +24,8 @@ const Projects: React.FC = () => {
   useEffect(() => {
     onLoad();
   }, []);
+
+  console.log(projectList);
 
   async function onLoad() {
     const response = await checkToken();
@@ -46,19 +38,22 @@ const Projects: React.FC = () => {
   }
 
   return (
-    <>
-      <Navigation />
+    <Navigation>
       <SplashScreen hide={hide} />
-      <div className={styles['content_wrapper']}>
-        <CreateModal />
-        <GridLayout>
-          {projectList.map((item, i) => (
-            <ProjectCard key={i} {...item} />
-          ))}
-        </GridLayout>
-      </div>
-    </>
+      <a href="/projects/create">Add project ...</a>
+      <GridLayout>
+        {projectList.map((item, i) => (
+          <ProjectCard key={i} {...item} />
+        ))}
+      </GridLayout>
+    </Navigation>
   );
 };
+
+// export const getStaticProps: GetStaticProps = async () => {
+//   const response = await fetch(`http://localhost:8080/getAllProjects`)
+//   const items = await response.json();
+//   return { props: { items } };
+// };
 
 export default Projects;
