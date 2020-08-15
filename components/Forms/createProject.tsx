@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Dropzone from 'react-dropzone';
-
-import { createProject } from '../../api/projects';
 
 import styles from './styles.scss';
 
-const CreateForm: React.FC = () => {
-  const router = useRouter();
+type Props = {
+  submitForm: (...args: any[]) => void;
+};
+
+const CreateForm: React.FC<any> = ({ submitForm }: Props) => {
   const [value, setValue] = useState({
     title: '',
   });
@@ -15,9 +15,7 @@ const CreateForm: React.FC = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const item = { title: value.title, imgFile };
-    const response = await createProject({ item });
-    if (response === true) router.push('/projects');
+    submitForm({ title: value.title, imgFile });
   }
 
   function handleChange(event) {
