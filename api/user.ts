@@ -1,7 +1,7 @@
+import getConfig from 'next/config';
 import fetch from 'isomorphic-unfetch';
-import config from '../config/var';
 
-const api = config.api.uri;
+const { publicRuntimeConfig: conf } = getConfig();
 
 type Props = {
   newUser: {
@@ -22,7 +22,7 @@ export const createNewUser = (newUser: {
   password: string;
   email: string;
 }): Promise<string | void> => {
-  return fetch(api + 'createUser', {
+  return fetch(`${conf.api.url}createUser`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newUser),
@@ -36,7 +36,7 @@ export const createNewUser = (newUser: {
 };
 
 export const loginUser = (userDetails: { email: string; password: string }): Promise<boolean | void> => {
-  return fetch(api + 'authenticate', {
+  return fetch(`${conf.api.url}authenticate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userDetails),
@@ -58,7 +58,7 @@ export const loginUser = (userDetails: { email: string; password: string }): Pro
 };
 
 export const signOutUser = (): Promise<boolean | void> => {
-  return fetch(api + 'signOut', {
+  return fetch(`${conf.api.url}signOut`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

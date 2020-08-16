@@ -1,7 +1,7 @@
+import getConfig from 'next/config';
 import fetch from 'isomorphic-unfetch';
-import config from '../config/var';
 
-const api = config.api.uri;
+const { publicRuntimeConfig: conf } = getConfig();
 
 type Props = {
   item: {
@@ -13,7 +13,7 @@ type Props = {
 export const getAllProjects = async (): Promise<
   [{ slug: string; _id: string; imgFile: string; title: string }] | undefined
 > => {
-  const response = await fetch(api + 'getProject', {
+  const response = await fetch(`${conf.api.url}getProject`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -28,7 +28,7 @@ export const createProject = async ({ item }: Props): Promise<void | boolean> =>
 
   formData.forEach((file) => console.log('File: ', file));
 
-  const response = await fetch(api + 'createProject', {
+  const response = await fetch(`${conf.api.url}createProject`, {
     method: 'POST',
     // headers: { 'Content-Type': 'application/json' },
     // headers: { 'Content-Type': 'multipart/form-data' },
@@ -38,8 +38,7 @@ export const createProject = async ({ item }: Props): Promise<void | boolean> =>
 };
 
 export const deleteProject = ({ _id }: { _id: string }): Promise<void | boolean> => {
-  console.log(_id);
-  return fetch(`${api}deleteProject/${_id}`, {
+  return fetch(`${conf.api.url}deleteProject/${_id}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   }).then((response) => {

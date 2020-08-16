@@ -1,10 +1,10 @@
+import getConfig from 'next/config';
 import fetch from 'isomorphic-unfetch';
-import config from '../config/var';
 
-const api = config.api.uri;
+const { publicRuntimeConfig: conf } = getConfig();
 
 export const checkToken = (): Promise<void | boolean> => {
-  return fetch(api + 'checkToken', {
+  return fetch(`${conf.api.url}checkToken`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
