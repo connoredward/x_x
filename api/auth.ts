@@ -1,10 +1,10 @@
 import fetch from 'isomorphic-unfetch';
 import config from '../config/var';
 
-const apiUrl = config.api.prod;
+const api = config.api.uri;
 
 export const checkToken = (): Promise<void | boolean> => {
-  return fetch(apiUrl + 'checkToken', {
+  return fetch(api + 'checkToken', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
