@@ -3,9 +3,14 @@ import classnames from 'classnames';
 
 import styles from './styles.scss';
 
+type Props = {
+  content?: string;
+  hide?: boolean;
+};
+
 const dots = ['', '.', '..', '...'];
 
-const Splash: React.FC<any> = ({ hide }: { hide: boolean }) => {
+const Splash: React.FC<any> = ({ hide, content }: Props) => {
   const [counter, setCounter] = useState(0);
   useEffect(() => {
     const id = setInterval(() => setCounter((count) => (count === 4 ? 0 : count + 1)), 500);
@@ -14,7 +19,10 @@ const Splash: React.FC<any> = ({ hide }: { hide: boolean }) => {
 
   return (
     <div className={classnames(styles['splash_screen'], styles[hide ? 'hide' : undefined])}>
-      <h1>Loading{dots[counter]}</h1>
+      <h1>
+        {content}
+        {dots[counter]}
+      </h1>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import getConfig from 'next/config';
 import { GetStaticProps, GetStaticPaths } from 'next';
+import getConfig from 'next/config';
 import fetch from 'isomorphic-unfetch';
 
 import Navigation from '@components/Navigation';
@@ -23,15 +23,15 @@ const SubProjectPage = ({ post }: Props) => {
 
 export default SubProjectPage;
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch(`${conf.api.url}getProject`);
-  const posts = await res.json();
-  const paths = posts.map((post) => ({ params: { id: post._id } }));
-  return { paths, fallback: false };
-};
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const res = await fetch(`${conf.api.url}getProject`);
+//   const posts = await res.json();
+//   const paths = posts.map((post) => ({ params: { id: post._id } }));
+//   return { paths, fallback: false };
+// };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const res = await fetch(`${conf.api.url}getProject/${params.id}`);
-  const post = await res.json();
-  return { props: { post } };
-};
+// export const getStaticProps: GetStaticProps = async ({ params }) => {
+//   const res = await fetch(`${conf.api.url}getProject/${params.id}`);
+//   const post = await res.json();
+//   return { props: { post } };
+// };
