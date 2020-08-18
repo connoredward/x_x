@@ -24,7 +24,7 @@ const SubProjectPage: React.FC = () => {
   return (
     <Navigation>
       <a href="/projects">Return</a>
-      {data}
+      {data.title}
     </Navigation>
   );
 };
