@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 
 import Modal from '@components/Modal';
@@ -6,7 +6,7 @@ import CreateUserForm from '@components/Forms/createUser';
 import SplashScreen from '@components/Splash';
 
 import { loginUser } from '../../api/user';
-import { checkToken } from '../../api/auth';
+import { Context as AuthContext } from '../../store/auth';
 
 import styles from './styles.scss';
 
@@ -15,7 +15,7 @@ const CreateUserModal: React.FC = () => {
 
   return (
     <>
-      <button onClick={() => setModalActive(!modalActive)}>start your 14-day free trial</button>
+      <button onClick={() => setModalActive(!modalActive)}>Create account</button>
       <Modal active={modalActive} close={() => setModalActive(false)}>
         <CreateUserForm close={() => setModalActive(false)} />
       </Modal>
@@ -24,27 +24,18 @@ const CreateUserModal: React.FC = () => {
 };
 
 const Login: React.FC = () => {
+  const { auth } = useContext(AuthContext);
+
   const router = useRouter();
   const [value, setValue] = useState({
     email: '',
     password: '',
   });
-  const [hide, setHide] = useState(false);
-
-  useEffect(() => {
-    onLoad();
-  }, []);
-
-  async function onLoad() {
-    const response = await checkToken();
-    if (response === true) router.push('/');
-    setHide(true);
-  }
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const response = await loginUser(value);
-    if (response === true) router.push('/');
+    const res = await loginUser(value);
+    if (res) router.push('/');
   }
 
   function handleChange(event) {
@@ -52,17 +43,18 @@ const Login: React.FC = () => {
     setValue((prevVal) => ({ ...prevVal, ...changedValue }));
   }
 
+  if (!auth) return <SplashScreen content={'Authenticating'} />;
+
   return (
     <div className={styles['page_wrapper']}>
-      <SplashScreen hide={hide} />
       <div className={styles['content_header']}>
         <div>
           <img src="../../static/images/happy-bunch.png" />
           <h2>Sign in to your account</h2>
 
-          {/* USER CREATE MODAL */}
           <div className={styles['button_wrapper']}>
             <p>Or</p>
+            {/* USER CREATE MODAL */}
             <CreateUserModal />
           </div>
         </div>

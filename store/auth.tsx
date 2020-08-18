@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter, Router } from 'next/router';
+import { useRouter } from 'next/router';
 
 import { checkToken } from '../api/auth';
 
@@ -17,21 +17,13 @@ export const Store: React.FC = ({ children }: Props) => {
   useEffect(() => {
     async function authApp() {
       const res = await checkToken();
-      if (res) setAuth(true);
-      else router.push('/login');
+      if (!res) router.push('/login');
+      setAuth(true);
     }
     authApp();
   }, []);
 
-  return (
-    <Context.Provider
-      value={{
-        auth,
-      }}
-    >
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={{ auth }}>{children}</Context.Provider>;
 };
 
 export default {

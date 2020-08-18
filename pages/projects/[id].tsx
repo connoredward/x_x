@@ -1,37 +1,32 @@
-import { GetStaticProps, GetStaticPaths } from 'next';
+import { useContext } from 'react';
+import { useRouter } from 'next/router';
 import getConfig from 'next/config';
-import fetch from 'isomorphic-unfetch';
+import fetch from 'unfetch';
+import useSWR from 'swr';
 
 import Navigation from '@components/Navigation';
+import SplashScreen from '@components/Splash';
 
-import { Project } from '../../interfaces';
+import { Context as AuthContext } from '../../store/auth';
 
 const { publicRuntimeConfig: conf } = getConfig();
+const fetcher = (url) => fetch(url).then((r) => r.json());
 
-type Props = {
-  post?: Project;
-};
+const SubProjectPage: React.FC = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const { auth } = useContext(AuthContext);
+  const { data, error } = useSWR(`${conf.api.url}getProject/${id}`, fetcher);
 
-const SubProjectPage = ({ post }: Props) => {
-  console.log(post);
+  if (!auth) return <SplashScreen content={'Authenticating'} />;
+  if (error || !data) return <SplashScreen content={'Loading'} />;
+
   return (
     <Navigation>
       <a href="/projects">Return</a>
+      {data}
     </Navigation>
   );
 };
 
 export default SubProjectPage;
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const res = await fetch(`${conf.api.url}getProject`);
-//   const posts = await res.json();
-//   const paths = posts.map((post) => ({ params: { id: post._id } }));
-//   return { paths, fallback: false };
-// };
-
-// export const getStaticProps: GetStaticProps = async ({ params }) => {
-//   const res = await fetch(`${conf.api.url}getProject/${params.id}`);
-//   const post = await res.json();
-//   return { props: { post } };
-// };
