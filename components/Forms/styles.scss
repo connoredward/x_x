@@ -142,6 +142,18 @@
     @apply uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 py-4;
   }
 
+  .thumbs_wrapper {
+    @apply h-32;
+
+    >div {
+      @apply h-full;
+    }
+
+    img {
+      @apply h-full;
+    }
+  }
+
   .primary_btn {
     // @apply px-4 bg-transparent p-3 rounded-lg text-indigo-500 mr-2;
     @apply rounded-md shadow-sm px-1;

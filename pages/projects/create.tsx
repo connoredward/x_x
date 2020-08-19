@@ -8,20 +8,23 @@ import SplashScreen from '@components/Splash';
 import { createProject } from '../../api/projects';
 import { Context as AuthContext } from '../../store/auth';
 
+const formData = { title: '' };
+
 const CreateProjectPage: React.FC = () => {
   const { auth } = useContext(AuthContext);
   const router = useRouter();
 
   async function submitForm(formData) {
-    const response = await createProject({ item: formData });
-    if (response === true) router.push('/projects');
+    const res = await createProject({ item: formData });
+    if (res) router.push('/projects');
   }
 
   if (!auth) return <SplashScreen content={'Authenticating'} />;
+
   return (
     <Navigation>
       <a href="/projects">Return</a>
-      <CreateForm submitForm={(formData) => submitForm(formData)} />
+      <CreateForm submitForm={(formData) => submitForm(formData)} formData={formData} />
     </Navigation>
   );
 };

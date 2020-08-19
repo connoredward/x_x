@@ -6,7 +6,7 @@ const { publicRuntimeConfig: conf } = getConfig();
 type Props = {
   item: {
     title: string;
-    imgFile?: File | unknown;
+    imgFile?: File | string;
   };
 };
 
@@ -20,21 +20,20 @@ export const getAllProjects = async (): Promise<
   return await response.json();
 };
 
-export const createProject = async ({ item }: Props): Promise<void | boolean> => {
-  const files = item.imgFile;
+export const createProject = ({ item }: Props): Promise<void | boolean> => {
   const formData = new FormData();
-  formData.append('title', item.title);
-  formData.append('myFile', files[0]);
+  for (const key in item) formData.append(key, item[key]);
 
-  formData.forEach((file) => console.log('File: ', file));
-
-  const response = await fetch(`${conf.api.url}createProject`, {
+  return fetch(`${conf.api.url}createProject`, {
     method: 'POST',
-    // headers: { 'Content-Type': 'application/json' },
-    // headers: { 'Content-Type': 'multipart/form-data' },
     body: formData,
-  });
-  return await response.json();
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    });
 };
 
 export const deleteProject = ({ _id }: { _id: string }): Promise<void | boolean> => {
@@ -47,8 +46,25 @@ export const deleteProject = ({ _id }: { _id: string }): Promise<void | boolean>
   // .then(data => { return data });
 };
 
+export const updateProject = (item: Props): Promise<void | boolean> => {
+  const formData = new FormData();
+  for (const key in item) formData.append(key, item[key]);
+
+  return fetch(`${conf.api.url}updateProject`, {
+    method: 'PUT',
+    body: formData,
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    });
+};
+
 export default {
   getAllProjects,
   createProject,
   deleteProject,
+  updateProject,
 };

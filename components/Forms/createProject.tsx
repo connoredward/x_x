@@ -1,21 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Dropzone from 'react-dropzone';
+
+import { Project } from '../../interfaces';
 
 import styles from './styles.scss';
 
 type Props = {
   submitForm: (...args: any[]) => void;
+  formData: Project;
 };
 
-const CreateForm: React.FC<any> = ({ submitForm }: Props) => {
-  const [value, setValue] = useState({
-    title: '',
-  });
-  const [imgFile, setImgFile] = useState([]);
+const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
+  const [value, setValue] = useState(formData);
+  const [uploadedFile, setUploadedFile] = useState([]);
+
+  useEffect(() => {
+    if (formData && formData.img) setUploadedFile([{ preview: formData.img }]);
+  }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
-    submitForm({ title: value.title, imgFile });
+    submitForm({
+      ...value,
+      img: uploadedFile[0] instanceof File ? uploadedFile[0] : formData.img,
+    });
   }
 
   function handleChange(event) {
@@ -23,7 +31,7 @@ const CreateForm: React.FC<any> = ({ submitForm }: Props) => {
     setValue((prevVal) => ({ ...prevVal, ...changedValue }));
   }
 
-  const thumbs = imgFile.map((item, i) => (
+  const thumbs = uploadedFile.map((item, i) => (
     <div key={i}>
       <img src={item.preview} />
     </div>
@@ -41,7 +49,7 @@ const CreateForm: React.FC<any> = ({ submitForm }: Props) => {
       <div className={styles['file_uploader']}>
         <Dropzone
           onDrop={(acceptedFiles) =>
-            setImgFile(
+            setUploadedFile(
               acceptedFiles.map((file) =>
                 Object.assign(file, {
                   preview: URL.createObjectURL(file),
@@ -61,7 +69,7 @@ const CreateForm: React.FC<any> = ({ submitForm }: Props) => {
         </Dropzone>
       </div>
 
-      <div>{thumbs}</div>
+      <div className={styles['thumbs_wrapper']}>{thumbs}</div>
 
       <span className={styles['primary_btn']}>
         <button type="submit">Action</button>

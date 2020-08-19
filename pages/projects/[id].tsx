@@ -5,9 +5,11 @@ import fetch from 'unfetch';
 import useSWR from 'swr';
 
 import Navigation from '@components/Navigation';
+import UpdateForm from '@components/Forms/createProject';
 import SplashScreen from '@components/Splash';
 
 import { Context as AuthContext } from '../../store/auth';
+import { updateProject } from '../../api/projects';
 
 const { publicRuntimeConfig: conf } = getConfig();
 const fetcher = (url) => fetch(url).then((r) => r.json());
@@ -18,13 +20,18 @@ const SubProjectPage: React.FC = () => {
   const { auth } = useContext(AuthContext);
   const { data, error } = useSWR(`${conf.api.url}getProject/${id}`, fetcher);
 
+  async function submitForm(formData) {
+    const res = await updateProject(formData);
+    if (res) router.push('/projects');
+  }
+
   if (!auth) return <SplashScreen content={'Authenticating'} />;
   if (error || !data) return <SplashScreen content={'Loading'} />;
 
   return (
     <Navigation>
       <a href="/projects">Return</a>
-      {data.title}
+      <UpdateForm submitForm={(formData) => submitForm(formData)} formData={data} />
     </Navigation>
   );
 };
