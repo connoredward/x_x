@@ -9,7 +9,7 @@ import UpdateForm from '@components/Forms/createProject';
 import SplashScreen from '@components/Splash';
 
 import { Context as AuthContext } from '../../store/auth';
-import { updateProject } from '../../api/projects';
+import { updateProject, deleteProject } from '../../api/projects';
 
 const { publicRuntimeConfig: conf } = getConfig();
 const fetcher = (url) => fetch(url).then((r) => r.json());
@@ -25,12 +25,18 @@ const SubProjectPage: React.FC = () => {
     if (res) router.push('/projects');
   }
 
+  async function removeProject(_id) {
+    const res = await deleteProject({ _id });
+    if (res) router.push('/projects');
+  }
+
   if (!auth) return <SplashScreen content={'Authenticating'} />;
   if (error || !data) return <SplashScreen content={'Loading'} />;
 
   return (
     <Navigation>
       <a href="/projects">Return</a>
+      <button onClick={() => removeProject(data._id)}>DELETE PROJECT</button>
       <UpdateForm submitForm={(formData) => submitForm(formData)} formData={data} />
     </Navigation>
   );

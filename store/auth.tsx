@@ -18,6 +18,7 @@ export const Store: React.FC = ({ children }: Props) => {
     async function authApp() {
       const res = await checkToken();
       if (!res) router.push('/login');
+      if (res && router.pathname === '/login') router.push('/');
       setAuth(true);
     }
     authApp();

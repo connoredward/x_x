@@ -40,10 +40,13 @@ export const deleteProject = ({ _id }: { _id: string }): Promise<void | boolean>
   return fetch(`${conf.api.url}deleteProject/${_id}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
-  }).then((response) => {
-    console.log('delete response', response);
-  });
-  // .then(data => { return data });
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    });
 };
 
 export const updateProject = (item: Props): Promise<void | boolean> => {

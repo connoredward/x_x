@@ -18,6 +18,7 @@ const Projects: React.FC = () => {
   const { data, error } = useSWR(`${conf.api.url}getProject`, fetcher);
   if (!auth) return <SplashScreen content={'Authenticating'} />;
   if (error || !data) return <SplashScreen content={'Loading'} />;
+
   return (
     <Navigation>
       <a href="/projects/create">Add project ...</a>
