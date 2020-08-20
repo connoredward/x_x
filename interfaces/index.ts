@@ -5,6 +5,7 @@ export type Project = {
   createdAt?: string;
   updatedAt?: string;
   slug?: string;
+  category?: string;
 };
 
 export type User = {

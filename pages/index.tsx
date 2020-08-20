@@ -1,33 +1,32 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import getConfig from 'next/config';
+import fetch from 'unfetch';
+import useSWR from 'swr';
 
 import Navigation from '@components/Navigation';
 import SplashScreen from '@components/Splash';
 
-import { checkToken } from '../api/auth';
+import { Context as AuthContext } from '../store/auth';
+
+const { publicRuntimeConfig: conf } = getConfig();
+const fetcher = (url) => fetch(url).then((r) => r.json());
 
 const Main: React.FC = () => {
-  const router = useRouter();
-  const [hide, setHide] = useState(false);
-
-  useEffect(() => {
-    onLoad();
-  }, []);
-
-  async function onLoad() {
-    const response = await checkToken();
-    if (response === true) {
-      setHide(true);
-    } else {
-      router.push('/login');
-    }
-  }
+  const { auth } = useContext(AuthContext);
+  const { data, error } = useSWR(`${conf.api.url}getCategory`, fetcher);
+  if (!auth) return <SplashScreen content={'Authenticating'} />;
+  if (error || !data) return <SplashScreen content={'Loading'} />;
 
   return (
-    <div>
-      <SplashScreen hide={hide} />
-      <Navigation />
-    </div>
+    <Navigation>
+      <a href="/category/create">create category</a>
+      <p>Category manager..</p>
+      {data.map(({ title, slug }, index) => (
+        <a key={index} href={`/category/${slug}`}>
+          {title}
+        </a>
+      ))}
+    </Navigation>
   );
 };
 

@@ -6,18 +6,9 @@ const { publicRuntimeConfig: conf } = getConfig();
 type Props = {
   item: {
     title: string;
-    imgFile?: File | string;
+    img?: File | string;
+    category: string;
   };
-};
-
-export const getAllProjects = async (): Promise<
-  [{ slug: string; _id: string; imgFile: string; title: string }] | undefined
-> => {
-  const response = await fetch(`${conf.api.url}getProject`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  });
-  return await response.json();
 };
 
 export const createProject = ({ item }: Props): Promise<void | boolean> => {
@@ -66,7 +57,6 @@ export const updateProject = (item: Props): Promise<void | boolean> => {
 };
 
 export default {
-  getAllProjects,
   createProject,
   deleteProject,
   updateProject,
