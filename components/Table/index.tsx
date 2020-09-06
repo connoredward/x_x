@@ -1,9 +1,9 @@
-import { Project } from '../../interfaces';
+import { Post } from '../../interfaces';
 
 import styles from './styles.scss';
 
 type Props = {
-  data: Project[];
+  data: Post[];
 };
 
 const Table: React.FC<any> = ({ data }: Props) => {

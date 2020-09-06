@@ -2,22 +2,22 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 import Navigation from '@components/Navigation';
-import CreateForm from '@components/Forms/createProject';
+import CreateForm from '@components/Forms/createPost';
 import SplashScreen from '@components/Splash';
 import PageHeader from '@components/PageHeader';
 
-import { createProject } from '../../api/projects';
+import { createPost } from '../../api/posts';
 import { Context as AuthContext } from '../../store/auth';
 
 const formData = { title: '', row: 2, column: 2 };
 
-const CreateProjectPage: React.FC = () => {
+const CreatePostPage: React.FC = () => {
   const { auth } = useContext(AuthContext);
   const router = useRouter();
 
   async function submitForm(formData) {
-    const res = await createProject({ item: formData });
-    if (res) router.push('/projects');
+    const res = await createPost({ item: formData });
+    if (res) router.push('/posts');
   }
 
   if (!auth) return <SplashScreen content={'Authenticating'} />;
@@ -30,4 +30,4 @@ const CreateProjectPage: React.FC = () => {
   );
 };
 
-export default CreateProjectPage;
+export default CreatePostPage;

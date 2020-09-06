@@ -8,7 +8,7 @@ import Select from '@components/Select';
 import UploadMedia from '@components/UploadMedia';
 import RadioSelect from '@components/RadioSelect';
 
-import { Project } from '../../interfaces';
+import { Post } from '../../interfaces';
 
 import styles from './styles.scss';
 
@@ -17,11 +17,11 @@ const fetcher = (url) => fetch(url).then((r) => r.json());
 
 type Props = {
   submitForm: (...args: any[]) => void;
-  removeProject?: (...args: any[]) => void;
-  formData: Project;
+  removePost?: (...args: any[]) => void;
+  formData: Post;
 };
 
-const CreateForm: React.FC<any> = ({ submitForm, formData, removeProject }: Props) => {
+const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) => {
   const [value, setValue] = useState(formData);
   const [uploadedImg, setUploadedImg] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState([]);
@@ -54,7 +54,7 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removeProject }: Prop
   if (error || !data) return <div>Loading categories...</div>;
 
   return (
-    <form className={styles['create_project_form']} onSubmit={handleSubmit}>
+    <form className={styles['create_post_form']} onSubmit={handleSubmit}>
       <Input title={'title'} value={value.title} handleChange={handleChange} />
       <Select
         handleChange={handleChange}
@@ -90,11 +90,11 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removeProject }: Prop
           <button type="submit">Submit</button>
         </span>
         <span>
-          <a href="/projects">Return</a>
+          <a href="/posts">Return</a>
         </span>
-        {removeProject && (
+        {removePost && (
           <span className={styles['remove_button']}>
-            <button onClick={removeProject}>Remove</button>
+            <button onClick={removePost}>Remove</button>
           </span>
         )}
       </div>

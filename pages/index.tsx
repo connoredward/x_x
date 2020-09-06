@@ -17,7 +17,7 @@ const { publicRuntimeConfig: conf } = getConfig();
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
 const RecentlyAdded: React.FC = () => {
-  const { data, error } = useSWR(`${conf.api.url}getProject`, fetcher);
+  const { data, error } = useSWR(`${conf.api.url}getPost`, fetcher);
   if (error || !data) return <div>Loading...</div>;
 
   return (

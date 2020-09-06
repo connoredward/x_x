@@ -17,7 +17,7 @@ type Props = {
 };
 
 const Content: React.FC<any> = ({ slug }: Props) => {
-  const { data, error } = useSWR(`${conf.api.url}getProject`, fetcher);
+  const { data, error } = useSWR(`${conf.api.url}getPost`, fetcher);
   if (error || !data) return <div>Loading...</div>;
   return (
     <div>
@@ -29,7 +29,7 @@ const Content: React.FC<any> = ({ slug }: Props) => {
               <p>
                 {title} - {category}
               </p>
-              <a href={`/projects/${_id}`}>edit project...</a>
+              <a href={`/posts/${_id}`}>edit post...</a>
             </div>
           );
         })}
@@ -49,7 +49,7 @@ const SubCategoryPage: React.FC = () => {
   return (
     <Navigation>
       <a href={`/category/settings/${slug}`}>Edit category settings</a>
-      <a href="/projects/create">Add project</a>
+      <a href="/posts/create">Add post</a>
       <Content slug={slug} />
     </Navigation>
   );

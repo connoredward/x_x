@@ -23,7 +23,7 @@ const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
   }
 
   return (
-    <form className={styles['create_project_form']} onSubmit={handleSubmit}>
+    <form className={styles['create_post_form']} onSubmit={handleSubmit}>
       <div className={styles['main_row']}>
         <div>
           <label>Title</label>

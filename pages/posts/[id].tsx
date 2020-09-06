@@ -5,30 +5,30 @@ import fetch from 'unfetch';
 import useSWR from 'swr';
 
 import Navigation from '@components/Navigation';
-import UpdateForm from '@components/Forms/createProject';
+import UpdateForm from '@components/Forms/createPost';
 import SplashScreen from '@components/Splash';
 import PageHeader from '@components/PageHeader';
 
 import { Context as AuthContext } from '../../store/auth';
-import { updateProject, deleteProject } from '../../api/projects';
+import { updatePost, deletePost } from '../../api/posts';
 
 const { publicRuntimeConfig: conf } = getConfig();
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
-const SubProjectPage: React.FC = () => {
+const SubPostPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
   const { auth } = useContext(AuthContext);
-  const { data, error } = useSWR(`${conf.api.url}getProject/${id}`, fetcher);
+  const { data, error } = useSWR(`${conf.api.url}getPost/${id}`, fetcher);
 
   async function submitForm(formData) {
-    const res = await updateProject(formData);
-    if (res) router.push('/projects');
+    const res = await updatePost(formData);
+    if (res) router.push('/posts');
   }
 
-  async function removeProject(_id) {
-    const res = await deleteProject({ _id });
-    if (res) router.push('/projects');
+  async function removePost(_id) {
+    const res = await deletePost({ _id });
+    if (res) router.push('/posts');
   }
 
   if (!auth) return <SplashScreen content={'Authenticating'} />;
@@ -40,10 +40,10 @@ const SubProjectPage: React.FC = () => {
       <UpdateForm
         submitForm={(formData) => submitForm(formData)}
         formData={data}
-        removeProject={() => removeProject(data._id)}
+        removePost={() => removePost(data._id)}
       />
     </Navigation>
   );
 };
 
-export default SubProjectPage;
+export default SubPostPage;

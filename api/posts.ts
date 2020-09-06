@@ -12,11 +12,11 @@ type Props = {
   };
 };
 
-export const createProject = ({ item }: Props): Promise<void | boolean> => {
+export const createPost = ({ item }: Props): Promise<void | boolean> => {
   const formData = new FormData();
   for (const key in item) formData.append(key, item[key]);
 
-  return fetch(`${conf.api.url}createProject`, {
+  return fetch(`${conf.api.url}createPost`, {
     method: 'POST',
     body: formData,
   })
@@ -28,8 +28,8 @@ export const createProject = ({ item }: Props): Promise<void | boolean> => {
     });
 };
 
-export const deleteProject = ({ _id }: { _id: string }): Promise<void | boolean> => {
-  return fetch(`${conf.api.url}deleteProject/${_id}`, {
+export const deletePost = ({ _id }: { _id: string }): Promise<void | boolean> => {
+  return fetch(`${conf.api.url}deletePost/${_id}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   })
@@ -41,11 +41,11 @@ export const deleteProject = ({ _id }: { _id: string }): Promise<void | boolean>
     });
 };
 
-export const updateProject = (item: Props): Promise<void | boolean> => {
+export const updatePost = (item: Props): Promise<void | boolean> => {
   const formData = new FormData();
   for (const key in item) formData.append(key, item[key]);
 
-  return fetch(`${conf.api.url}updateProject`, {
+  return fetch(`${conf.api.url}updatePost`, {
     method: 'PUT',
     body: formData,
   })
@@ -58,7 +58,7 @@ export const updateProject = (item: Props): Promise<void | boolean> => {
 };
 
 export default {
-  createProject,
-  deleteProject,
-  updateProject,
+  createPost,
+  deletePost,
+  updatePost,
 };

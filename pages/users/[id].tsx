@@ -1,10 +1,10 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import fetch from 'isomorphic-unfetch';
 
-import { Project } from '../../interfaces';
+import { Post } from '../../interfaces';
 
 type Props = {
-  post?: Project;
+  post?: Post;
 };
 
 const StaticPropsDetail = () => {

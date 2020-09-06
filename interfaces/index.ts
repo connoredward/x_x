@@ -1,4 +1,4 @@
-export type Project = {
+export type Post = {
   _id?: string;
   title?: string;
   img?: string;

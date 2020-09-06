@@ -10,8 +10,8 @@ export default {
     {
       title: 'Post',
       sub: [
-        { title: 'Create new', link: '/projects/create' },
-        { title: 'All posts', link: '/projects' },
+        { title: 'Create new', link: '/posts/create' },
+        { title: 'All posts', link: '/posts' },
       ],
     },
     {
