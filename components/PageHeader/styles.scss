@@ -1,0 +1,19 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+.page_header {
+  @apply bg-white w-full h-32 my-1 flex items-center px-10;
+
+  h1,
+  p {
+    @apply text-gray-700
+  }
+
+  h1 {
+    @apply text-lg py-4;
+  }
+
+  p {
+    @apply text-sm;
+  }
+}

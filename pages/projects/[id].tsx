@@ -7,6 +7,7 @@ import useSWR from 'swr';
 import Navigation from '@components/Navigation';
 import UpdateForm from '@components/Forms/createProject';
 import SplashScreen from '@components/Splash';
+import PageHeader from '@components/PageHeader';
 
 import { Context as AuthContext } from '../../store/auth';
 import { updateProject, deleteProject } from '../../api/projects';
@@ -35,9 +36,12 @@ const SubProjectPage: React.FC = () => {
 
   return (
     <Navigation>
-      <a href="/projects">Return</a>
-      <button onClick={() => removeProject(data._id)}>DELETE PROJECT</button>
-      <UpdateForm submitForm={(formData) => submitForm(formData)} formData={data} />
+      <PageHeader />
+      <UpdateForm
+        submitForm={(formData) => submitForm(formData)}
+        formData={data}
+        removeProject={() => removeProject(data._id)}
+      />
     </Navigation>
   );
 };

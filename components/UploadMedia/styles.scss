@@ -1,0 +1,37 @@
+.upload_wrapper {
+  @apply flex mb-2;
+
+  .label_container {
+    @apply w-1/4 text-right;
+
+    label {
+      @apply block text-gray-700 text-sm;
+    }
+  }
+
+  .file_uploader {
+    @apply text-gray-700 text-sm py-4 bg-gray-200 text-center w-1/4 mx-2;
+
+    &:hover {
+      @apply cursor-pointer;
+    }
+  }
+}
+
+
+.thumbs_wrapper {
+  @apply h-32;
+
+  >div {
+    @apply h-full relative;
+  }
+
+  img,
+  video {
+    @apply h-full m-auto;
+  }
+
+  button {
+    @apply absolute top-0 right-0 bg-white rounded-full p-1 text-red-500 w-6;
+  }
+}

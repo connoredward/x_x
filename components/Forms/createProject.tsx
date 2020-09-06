@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import Dropzone from 'react-dropzone';
 import getConfig from 'next/config';
 import fetch from 'unfetch';
 import useSWR from 'swr';
+
+import Input from '@components/Input';
+import Select from '@components/Select';
+import UploadMedia from '@components/UploadMedia';
+import RadioSelect from '@components/RadioSelect';
 
 import { Project } from '../../interfaces';
 
@@ -13,23 +17,32 @@ const fetcher = (url) => fetch(url).then((r) => r.json());
 
 type Props = {
   submitForm: (...args: any[]) => void;
+  removeProject?: (...args: any[]) => void;
   formData: Project;
 };
 
-const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
+const CreateForm: React.FC<any> = ({ submitForm, formData, removeProject }: Props) => {
   const [value, setValue] = useState(formData);
-  const [uploadedFile, setUploadedFile] = useState([]);
+  const [uploadedImg, setUploadedImg] = useState([]);
+  const [uploadedVideo, setUploadedVideo] = useState([]);
+
   const { data, error } = useSWR(`${conf.api.url}getCategory`, fetcher);
 
   useEffect(() => {
-    if (formData && formData.img) setUploadedFile([{ preview: formData.img }]);
+    if (formData && formData.img) setUploadedImg([{ preview: formData.img }]);
+    if (formData && formData.video) setUploadedVideo([{ preview: formData.video }]);
   }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
+
+    if (value.row) value.row = Number(value.row);
+    if (value.column) value.column = Number(value.column);
+
     submitForm({
       ...value,
-      img: uploadedFile[0] instanceof File ? uploadedFile[0] : formData.img,
+      img: uploadedImg[0] instanceof File ? uploadedImg[0] : formData.img,
+      video: uploadedVideo[0] instanceof File ? uploadedVideo[0] : formData.video,
     });
   }
 
@@ -38,72 +51,53 @@ const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
     setValue((prevVal) => ({ ...prevVal, ...changedValue }));
   }
 
-  const thumbs = uploadedFile.map((item, i) => (
-    <div key={i}>
-      <img src={item.preview} />
-    </div>
-  ));
-
   if (error || !data) return <div>Loading categories...</div>;
 
   return (
     <form className={styles['create_project_form']} onSubmit={handleSubmit}>
-      <div className={styles['main_row']}>
-        <div>
-          <label>Title</label>
-          <input name="title" type="text" value={value.title} onChange={handleChange} />
-        </div>
+      <Input title={'title'} value={value.title} handleChange={handleChange} />
+      <Select
+        handleChange={handleChange}
+        name={'category'}
+        defaultValue={formData.category}
+        data={data.map(({ slug }) => {
+          return slug;
+        })}
+      />
+      <Select handleChange={handleChange} name={'row'} defaultValue={formData.row || 1} data={[1, 2, 3, 4, 5, 6]} />
+      <Select
+        handleChange={handleChange}
+        name={'column'}
+        defaultValue={formData.column || 1}
+        data={[1, 2, 3, 4, 5, 6]}
+      />
+      <UploadMedia
+        setFile={(file) => setUploadedImg(file)}
+        removeFile={() => setUploadedImg([])}
+        files={uploadedImg}
+        uploadType={'image'}
+      />
+      <UploadMedia
+        setFile={(file) => setUploadedVideo(file)}
+        removeFile={() => setUploadedVideo([])}
+        files={uploadedVideo}
+        uploadType={'video'}
+      />
+      <RadioSelect title={'publish'} data={['publish', 'unpublish']} defaultValue={'publish'} />
+
+      <div className={styles['buttons_wrapper']}>
+        <span className={styles['submit_button']}>
+          <button type="submit">Submit</button>
+        </span>
+        <span>
+          <a href="/projects">Return</a>
+        </span>
+        {removeProject && (
+          <span className={styles['remove_button']}>
+            <button onClick={removeProject}>Remove</button>
+          </span>
+        )}
       </div>
-
-      <div className={styles['drop_down_select']}>
-        <label htmlFor="grid-state">Category</label>
-        <div className={styles['drop_down_wrapper']}>
-          <select name="category" onChange={handleChange}>
-            <option></option>
-            {data.map(({ slug }, idx) => {
-              return (
-                <option selected={slug === formData.category ? true : false} key={idx}>
-                  {slug}
-                </option>
-              );
-            })}
-          </select>
-          <div className={styles['icon_wrapper']}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles['file_uploader']}>
-        <Dropzone
-          onDrop={(acceptedFiles) =>
-            setUploadedFile(
-              acceptedFiles.map((file) =>
-                Object.assign(file, {
-                  preview: URL.createObjectURL(file),
-                })
-              )
-            )
-          }
-        >
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>Drag n drop some files or click here...</p>
-              </div>
-            </section>
-          )}
-        </Dropzone>
-      </div>
-
-      <div className={styles['thumbs_wrapper']}>{thumbs}</div>
-
-      <span className={styles['primary_btn']}>
-        <button type="submit">Action</button>
-      </span>
     </form>
   );
 };

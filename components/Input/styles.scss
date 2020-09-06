@@ -1,0 +1,23 @@
+.input_wrapper {
+  @apply flex items-center mb-2;
+
+  .label_container {
+    @apply w-1/4 text-right;
+  }
+
+  .input_container {
+    @apply w-1/2;
+  }
+
+  label {
+    @apply block text-gray-700 text-sm;
+  }
+
+  input {
+    @apply appearance-none w-full block bg-gray-200 text-gray-700 text-sm border border-gray-200 p-1 mx-2 leading-tight;
+
+    &:focus {
+      @apply outline-none bg-white border-gray-500;
+    }
+  }
+}

@@ -7,6 +7,7 @@ type Props = {
   item: {
     title: string;
     img?: File | string;
+    video?: File | string;
     category: string;
   };
 };

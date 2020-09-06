@@ -1,12 +1,45 @@
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import classnames from 'classnames';
 
 import { signOutUser } from '../../api/user';
 
+import menuItems from '../../config/menu';
+
 import styles from './styles.scss';
 
-const Navigation: React.FC<any> = ({ children }: { children: JSX.Element }) => {
+type Props = {
+  children?: ReactNode;
+  title?: string;
+  sub?: {
+    title: string;
+    link: string;
+  }[];
+};
+
+const { menu } = menuItems;
+
+const MenuManager = ({ title, sub }: Props) => {
+  const [active, setActive] = useState(false);
+
+  return (
+    <div>
+      <span onClick={() => setActive(!active)}>{title}</span>
+      <div className={classnames(styles['drop_down'], styles[active ? 'active' : undefined])}>
+        {sub &&
+          sub.map(({ title, link }, index) => {
+            return (
+              <span key={index}>
+                <a href={link}>{title}</a>
+              </span>
+            );
+          })}
+      </div>
+    </div>
+  );
+};
+
+const Navigation: React.FC<any> = ({ children }: Props) => {
   const router = useRouter();
   const [dropMenuActive, setDropMenuActive] = useState(false);
 
@@ -20,24 +53,6 @@ const Navigation: React.FC<any> = ({ children }: { children: JSX.Element }) => {
       <nav className={styles['navigation_wrapper']}>
         <div>
           <div className={styles['nav_container']}>
-            <div className={styles['menu_wrapper']}>
-              <div className={styles['logo_wrapper']}>
-                <img src="https://tailwindui.com/img/logos/workflow-mark-on-dark.svg" alt="Workflow logo" />
-              </div>
-              <div className={styles['buttons_wrapper']}>
-                <div>
-                  <a href="/" className={styles['main_btn']}>
-                    Dashboard
-                  </a>
-                  <a href="/projects" className={styles['sub_btn']}>
-                    Projects
-                  </a>
-                  {/* <a href="#" className={styles["sub_btn"]}>Team</a> */}
-                  {/* <a href="#" className={styles["sub_btn"]}>Calendar</a> */}
-                  {/* <a href="#" className={styles["sub_btn"]}>Reports</a> */}
-                </div>
-              </div>
-            </div>
             <div className={styles['profile_wrapper']}>
               <div className={styles['profile_icon']}>
                 <button aria-label="Notifications">
@@ -78,7 +93,20 @@ const Navigation: React.FC<any> = ({ children }: { children: JSX.Element }) => {
           </div>
         </div>
       </nav>
-      <div className={styles['content_wrapper']}>{children}</div>
+      <div className={styles['content_wrapper']}>
+        <div className={styles['placeholder_nav']} />
+        <div className={styles['side_navigation']}>
+          <div className={styles['link_wrapper']}>
+            <span>
+              <a href="/">Dashboard</a>
+            </span>
+            {menu.map((item, ind) => {
+              return <MenuManager key={ind} {...item} />;
+            })}
+          </div>
+        </div>
+        <div className={styles['content']}>{children}</div>
+      </div>
     </div>
   );
 };

@@ -4,11 +4,12 @@ import { useRouter } from 'next/router';
 import Navigation from '@components/Navigation';
 import CreateForm from '@components/Forms/createProject';
 import SplashScreen from '@components/Splash';
+import PageHeader from '@components/PageHeader';
 
 import { createProject } from '../../api/projects';
 import { Context as AuthContext } from '../../store/auth';
 
-const formData = { title: '' };
+const formData = { title: '', row: 2, column: 2 };
 
 const CreateProjectPage: React.FC = () => {
   const { auth } = useContext(AuthContext);
@@ -23,7 +24,7 @@ const CreateProjectPage: React.FC = () => {
 
   return (
     <Navigation>
-      <a href="/projects">Return</a>
+      <PageHeader />
       <CreateForm submitForm={(formData) => submitForm(formData)} formData={formData} />
     </Navigation>
   );

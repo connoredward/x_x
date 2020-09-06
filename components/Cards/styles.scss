@@ -28,3 +28,11 @@
     }
   }
 }
+
+.category_card {
+  @apply w-1/4 p-2 mb-4;
+
+  .card {
+    @apply rounded p-4 h-32 overflow-hidden shadow-lg flex items-center justify-center border-solid border border-gray-600;
+  }
+}

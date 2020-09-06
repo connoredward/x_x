@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 
 .navigation_wrapper {
-  @apply shadow fixed w-full bg-white;
+  @apply fixed w-full;
 
   >div {
 
@@ -10,7 +10,7 @@
     @apply px-4;
 
     .nav_container {
-      @apply flex items-center justify-between h-16;
+      @apply flex items-center justify-between h-10;
 
       .menu_wrapper {
         @apply flex items-center;
@@ -52,6 +52,8 @@
     }
 
     .profile_wrapper {
+      @apply absolute right-0 p-3;
+
       .profile_icon {
         // md:ml-6
         @apply ml-4 flex items-center;
@@ -116,5 +118,37 @@
 }
 
 .content_wrapper {
-  @apply px-12 py-24;
+  @apply flex;
+
+  .placeholder_nav,
+  .side_navigation {
+    @apply h-screen w-64 border-gray-600;
+  }
+
+  .side_navigation {
+    @apply fixed py-12 shadow bg-white;
+
+    .link_wrapper {
+      span {
+        @apply w-full block px-4 py-2 text-sm text-gray-700;
+
+        &:hover {
+          @apply bg-gray-100 cursor-pointer;
+        }
+      }
+
+      .drop_down {
+        @apply hidden bg-gray-200;
+
+        &.active {
+          @apply block;
+        }
+      }
+    }
+  }
+
+  .content {
+    @apply px-24 py-12 w-full;
+  }
+
 }

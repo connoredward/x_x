@@ -16,17 +16,20 @@ type Props = {
   slug: string;
 };
 
-const Content: React.FC<any> = (slug: Props) => {
+const Content: React.FC<any> = ({ slug }: Props) => {
   const { data, error } = useSWR(`${conf.api.url}getProject`, fetcher);
   if (error || !data) return <div>Loading...</div>;
   return (
     <div>
       {data
-        .filter(({ category }) => category !== slug)
-        .map(({ title, category }, index) => {
+        .filter(({ category }) => category === slug)
+        .map(({ title, category, _id }, index) => {
           return (
             <div key={index}>
-              {title} - {category}
+              <p>
+                {title} - {category}
+              </p>
+              <a href={`/projects/${_id}`}>edit project...</a>
             </div>
           );
         })}
@@ -45,6 +48,8 @@ const SubCategoryPage: React.FC = () => {
 
   return (
     <Navigation>
+      <a href={`/category/settings/${slug}`}>Edit category settings</a>
+      <a href="/projects/create">Add project</a>
       <Content slug={slug} />
     </Navigation>
   );
