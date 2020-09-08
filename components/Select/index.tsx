@@ -1,3 +1,5 @@
+import classnames from 'classnames';
+
 import styles from './styles.scss';
 
 type Props = {
@@ -5,11 +7,12 @@ type Props = {
   name: string;
   defaultValue: string;
   data: string[];
+  className?: string;
 };
 
-const Select: React.FC<any> = ({ handleChange, name, defaultValue, data }: Props) => (
+const Select: React.FC<any> = ({ handleChange, name, defaultValue, data, className }: Props) => (
   <div className={styles['drop_down_select']}>
-    <div className={styles['label_container']}>
+    <div className={classnames(styles['label_container'], className)}>
       <label htmlFor="grid-state">{name}</label>
     </div>
     <div className={styles['select_container']}>

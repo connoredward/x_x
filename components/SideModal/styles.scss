@@ -1,0 +1,80 @@
+.side_modal {
+  @apply h-screen w-screen hidden fixed inset-0 z-40;
+
+  &.active {
+    @apply block;
+  }
+
+  .background_modal {
+    @apply w-full h-full bg-gray-600 bg-opacity-50;
+
+    &:hover {
+      @apply cursor-pointer;
+    }
+  }
+
+  .modal_content {
+    @apply w-3/6 h-full bg-white absolute right-0 top-0 p-10;
+
+    .delete_popup {
+      @apply flex bg-blue-100 border border-blue-300 rounded mt-3 p-2 text-sm mb-4;
+
+      span {
+        @apply w-full;
+      }
+
+      button {
+        @apply text-blue-400 ml-1 px-1;
+
+        &:hover {
+          @apply text-blue-300;
+        }
+      }
+    }
+
+    .header {
+      @apply flex text-sm mb-4;
+
+      >div {
+        @apply w-32;
+      }
+
+      h1 {
+        @apply w-full font-semibold text-base text-sm;
+      }
+
+      a,
+      button {
+        @apply text-blue-400;
+
+        &:hover {
+          @apply text-blue-300;
+        }
+      }
+    }
+  }
+
+  table {
+    td {
+      @apply w-4/6;
+    }
+
+    h2 {
+      @apply font-semibold mt-4;
+    }
+
+    span,
+    h2 {
+      @apply text-sm;
+    }
+
+    span {
+      @apply text-gray-900;
+    }
+
+    img,
+    video {
+      @apply w-48;
+    }
+  }
+}

@@ -51,7 +51,7 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) 
     setValue((prevVal) => ({ ...prevVal, ...changedValue }));
   }
 
-  if (error || !data) return <div>Loading categories...</div>;
+  if (error || !data) return <div>Getting categories...</div>;
 
   return (
     <form className={styles['create_post_form']} onSubmit={handleSubmit}>

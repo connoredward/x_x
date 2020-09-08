@@ -18,7 +18,7 @@ const UploadMedia: React.FC<any> = ({ setFile, removeFile, files, uploadType }: 
       {uploadType === 'image' ? (
         <img src={item.preview} />
       ) : (
-        <video style={{ margin: '0 auto' }} width="320" height="100" controls>
+        <video width="320" height="100" controls>
           <source src={item.preview} type="video/mp4" />
         </video>
       )}

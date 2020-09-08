@@ -15,6 +15,15 @@ import { updatePost, deletePost } from '../../api/posts';
 const { publicRuntimeConfig: conf } = getConfig();
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
+const headerData = {
+  breadcrumbs: [
+    { link: '/', title: 'Dashboard' },
+    { link: '/posts', title: 'Posts' },
+    { link: '/posts/create', title: 'Create' },
+  ],
+  title: 'Edit Post',
+};
+
 const SubPostPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -36,7 +45,7 @@ const SubPostPage: React.FC = () => {
 
   return (
     <Navigation>
-      <PageHeader />
+      <PageHeader {...headerData} />
       <UpdateForm
         submitForm={(formData) => submitForm(formData)}
         formData={data}

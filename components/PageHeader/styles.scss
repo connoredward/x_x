@@ -5,7 +5,9 @@
   @apply bg-white w-full h-32 my-1 flex items-center px-10;
 
   h1,
-  p {
+  p,
+  span,
+  a {
     @apply text-gray-700
   }
 
@@ -13,7 +15,9 @@
     @apply text-lg py-4;
   }
 
-  p {
+  p,
+  span,
+  a {
     @apply text-sm;
   }
 }

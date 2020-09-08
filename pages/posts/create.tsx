@@ -11,6 +11,15 @@ import { Context as AuthContext } from '../../store/auth';
 
 const formData = { title: '', row: 2, column: 2 };
 
+const headerData = {
+  breadcrumbs: [
+    { link: '/', title: 'Dashboard' },
+    { link: '/posts', title: 'Posts' },
+    { link: '/posts/create', title: 'Create' },
+  ],
+  title: 'Create Post',
+};
+
 const CreatePostPage: React.FC = () => {
   const { auth } = useContext(AuthContext);
   const router = useRouter();
@@ -24,7 +33,7 @@ const CreatePostPage: React.FC = () => {
 
   return (
     <Navigation>
-      <PageHeader />
+      <PageHeader {...headerData} />
       <CreateForm submitForm={(formData) => submitForm(formData)} formData={formData} />
     </Navigation>
   );
