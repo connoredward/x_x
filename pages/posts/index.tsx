@@ -8,7 +8,10 @@ import PageHeader from '@components/PageHeader';
 import Table from '@components/Table';
 import SideModal from '@components/SideModal';
 
+import { deletePost, createPost } from '../../api/posts';
 import { Context as AuthContext } from '../../store/auth';
+
+const { publicRuntimeConfig: conf } = getConfig();
 
 const headerData = {
   breadcrumbs: [
@@ -18,32 +21,48 @@ const headerData = {
   title: 'All Posts',
 };
 
-const { publicRuntimeConfig: conf } = getConfig();
+const tableHeaders = ['Name', 'Slug', 'Created at', 'Category', 'Status', ''];
+
+const dataFormater = (selectedId, post) => {
+  const { title, img, video, category, row, column, status } = post.find(({ _id }) => _id === selectedId);
+  return { title, img, video, category, row, column, status };
+};
 
 const Posts: React.FC = () => {
-  const [sideModalActive, setSideModalActve] = useState(false);
-  const [sideModalContent, setSideModalContent] = useState({});
-
-  function closeSideModal() {
-    setSideModalActve(false);
-    setSideModalContent({});
-  }
-
-  function openSideModal(value) {
-    setSideModalActve(true);
-    setSideModalContent(value);
-  }
+  const [sideModalContent, setSideModalContent] = useState(null);
 
   const { auth } = useContext(AuthContext);
-  const { data, error } = useSWR(`${conf.api.url}getPost`);
+  const { data: post, error } = useSWR(`${conf.api.url}getPost`);
   if (!auth) return <SplashScreen content={'Authenticating'} />;
-  if (error || !data) return <SplashScreen content={'Loading'} />;
+  if (error || !post) return <SplashScreen content={'Loading'} />;
 
   return (
     <Navigation>
-      <SideModal active={sideModalActive} data={sideModalContent} close={() => closeSideModal()} />
+      {sideModalContent && <SideModal data={sideModalContent} close={() => setSideModalContent(null)} />}
       <PageHeader {...headerData} />
-      <Table tableData={data} openSide={(value) => openSideModal(value)} />
+      <Table
+        type={'posts'}
+        tableHeaders={tableHeaders}
+        tableData={post.map((item) => {
+          return { ...item, tag: item.category };
+        })}
+        deleteTable={(_ids) =>
+          Promise.all([
+            _ids.map((_id) => {
+              return deletePost({ _id });
+            }),
+          ])
+        }
+        copyTable={(selectedId) => createPost({ post: dataFormater(selectedId, post) })}
+        openSideModal={(selectedId) =>
+          setSideModalContent(
+            post.find(({ _id }) => {
+              return _id === selectedId;
+            })
+          )
+        }
+        deletePost={(_id) => deletePost({ _id })}
+      />
     </Navigation>
   );
 };

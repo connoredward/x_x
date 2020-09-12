@@ -1,20 +1,21 @@
 import getConfig from 'next/config';
 import fetch from 'isomorphic-unfetch';
 
-import { Post } from '../interfaces';
-
-type Props = {
-  post: Post;
-};
-
 const { publicRuntimeConfig: conf } = getConfig();
 
-export const createPost = ({ post }: Props): Promise<void | boolean> => {
-  console.log(post);
-  const formData = new FormData();
-  for (const key in post) formData.append(key, post[key]);
+type Props = {
+  content: {
+    title: string;
+    img?: File | string;
+    post: string;
+  };
+  _id: string;
+};
 
-  return fetch(`${conf.api.url}createPost`, {
+export const createContent = (content: Props): Promise<void | boolean> => {
+  const formData = new FormData();
+  for (const key in content) formData.append(key, content[key]);
+  return fetch(`${conf.api.url}createContent`, {
     method: 'POST',
     body: formData,
   })
@@ -26,8 +27,8 @@ export const createPost = ({ post }: Props): Promise<void | boolean> => {
     });
 };
 
-export const deletePost = ({ _id }: { _id: string }): Promise<void | boolean> => {
-  return fetch(`${conf.api.url}deletePost/${_id}`, {
+export const deleteContent = (_id: Props): Promise<void | boolean> => {
+  return fetch(`${conf.api.url}deleteContent/${_id}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   })
@@ -39,11 +40,10 @@ export const deletePost = ({ _id }: { _id: string }): Promise<void | boolean> =>
     });
 };
 
-export const updatePost = (post: Props): Promise<void | boolean> => {
+export const updateContent = (content: Props): Promise<void | boolean> => {
   const formData = new FormData();
-  for (const key in post) formData.append(key, post[key]);
-
-  return fetch(`${conf.api.url}updatePost`, {
+  for (const key in content) formData.append(key, content[key]);
+  return fetch(`${conf.api.url}updateContent`, {
     method: 'PUT',
     body: formData,
   })
@@ -56,7 +56,7 @@ export const updatePost = (post: Props): Promise<void | boolean> => {
 };
 
 export default {
-  createPost,
-  deletePost,
-  updatePost,
+  createContent,
+  deleteContent,
+  updateContent,
 };

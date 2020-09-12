@@ -8,25 +8,27 @@ import { Post } from '../../interfaces/';
 import styles from './styles.scss';
 
 type Props = {
-  active: boolean;
+  // active: boolean;
   data?: Post;
   close: (...args: any[]) => void;
 };
 
-const SideModal: React.FC<any> = ({ active, data, close }: Props) => {
+const SideModal: React.FC<any> = ({ data, close }: Props) => {
   const [popupActive, setPopupActive] = useState(false);
-  const { title, slug, _id, img, video, createdAt, updatedAt, row, column, category } = data;
+  const { title, slug, _id, img, video, createdAt, updatedAt, row, column, category, status } = data;
+
   function closeModal() {
     close();
     setPopupActive(false);
   }
+
   async function deleteItem() {
     const res = await deletePost({ _id });
     if (res) closeModal();
   }
 
   return (
-    <div className={classnames(styles['side_modal'], styles[active ? 'active' : undefined])}>
+    <div className={classnames(styles['side_modal'], styles['active'])}>
       <div className={styles['background_modal']} onClick={closeModal} />
       <div className={styles['modal_content']}>
         <div className={styles['header']}>
@@ -56,7 +58,7 @@ const SideModal: React.FC<any> = ({ active, data, close }: Props) => {
             </tr>
             <tr>
               <td>
-                <span>status: published</span>
+                <span>status: {status}</span>
               </td>
               <td>
                 <span>created at: {createdAt && createdAt.substring(0, 10)}</span>

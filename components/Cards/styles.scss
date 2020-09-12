@@ -36,3 +36,33 @@
     @apply rounded p-4 h-32 overflow-hidden shadow-lg flex items-center justify-center border-solid border border-gray-600;
   }
 }
+
+
+.progress_card {
+  @apply flex;
+
+  >div {
+    @apply p-5 w-full;
+  }
+
+  .placeholder_img {
+    @apply bg-gray-200 rounded h-12 w-12 m-auto bg-center bg-cover bg-repeat;
+  }
+
+  p,
+  span {
+    @apply text-sm;
+  }
+
+  p {
+    @apply text-gray-500;
+  }
+
+  .center_items {
+    @apply flex items-center justify-center;
+  }
+}
+
+.drop_down_button {
+  @apply text-blue-700 text-sm;
+}

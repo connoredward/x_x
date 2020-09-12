@@ -8,28 +8,59 @@ import PageHeader from '@components/PageHeader';
 import Table from '@components/Table';
 import SideModal from '@components/SideModal';
 
+import { deleteCategory, createCategory } from '../../api/category';
 import { Context as AuthContext } from '../../store/auth';
+
+const { publicRuntimeConfig: conf } = getConfig();
 
 const headerData = {
   breadcrumbs: [
     { link: '/', title: 'Dashboard' },
-    { link: '/posts', title: 'Categories' },
+    { link: '/category', title: 'Categories' },
   ],
   title: 'All Categories',
 };
 
-const { publicRuntimeConfig: conf } = getConfig();
+const tableHeaders = ['Name', 'Slug', 'Created at', 'status', ''];
+
+const dataFormater = (selectedId, categories) => {
+  const { title, status } = categories.find(({ _id }) => _id === selectedId);
+  return { title, status };
+};
 
 const Categories: React.FC = () => {
+  const [sideModalContent, setSideModalContent] = useState(null);
+
   const { auth } = useContext(AuthContext);
-  const { data, error } = useSWR(`${conf.api.url}getCategory`);
+  const { data: categories, error } = useSWR(`${conf.api.url}getCategory`);
   if (!auth) return <SplashScreen content={'Authenticating'} />;
-  if (error || !data) return <SplashScreen content={'Loading'} />;
+  if (error || !categories) return <SplashScreen content={'Loading'} />;
 
   return (
     <Navigation>
+      {sideModalContent && <SideModal data={sideModalContent} close={() => setSideModalContent(null)} />}
       <PageHeader {...headerData} />
-      <Table tableData={data} />
+      <Table
+        type={'category'}
+        tableHeaders={tableHeaders}
+        tableData={categories}
+        deleteTable={(_ids) =>
+          Promise.all([
+            _ids.map((_id) => {
+              return deleteCategory({ _id });
+            }),
+          ])
+        }
+        copyTable={(selectedId) => createCategory({ item: dataFormater(selectedId, categories) })}
+        openSideModal={(selectedId) =>
+          setSideModalContent(
+            categories.find(({ _id }) => {
+              return _id === selectedId;
+            })
+          )
+        }
+        deletePost={(_id) => deleteCategory({ _id })}
+      />
     </Navigation>
   );
 };

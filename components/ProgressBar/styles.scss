@@ -1,0 +1,35 @@
+.main {
+  @apply flex items-center justify-end w-full;
+
+  .progress_bar_wrapper {
+    @apply w-48 mx-4;
+
+    .progress_bar {
+      @apply bg-blue-200 rounded h-2;
+
+      &.CREATING {
+        @apply w-1/6;
+      }
+
+      &.UPLOADING_IMAGE {
+        @apply w-2/6;
+      }
+
+      &.UPLOADED_IMAGE {
+        @apply w-3/6;
+      }
+
+      &.UPLOADING_VIDEO {
+        @apply w-4/6;
+      }
+
+      &.UPLOADED_VIDEO {
+        @apply w-5/6;
+      }
+
+      &.COMPLETE {
+        @apply w-full bg-green-300;
+      }
+    }
+  }
+}

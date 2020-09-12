@@ -3,10 +3,11 @@ import styles from './styles.scss';
 type Props = {
   title: string;
   data: string[];
+  handleChange: (...args: any[]) => void;
   defaultValue?: string;
 };
 
-const RadioSelect: React.FC<any> = ({ title, data, defaultValue }: Props) => (
+const RadioSelect: React.FC<any> = ({ title, data, defaultValue, handleChange }: Props) => (
   <div className={styles['radio_wrapper']}>
     <div className={styles['label_container']}>
       <label>{title}</label>
@@ -16,6 +17,7 @@ const RadioSelect: React.FC<any> = ({ title, data, defaultValue }: Props) => (
         return (
           <div key={index}>
             <input
+              onChange={handleChange}
               type="radio"
               name={title}
               value={item}

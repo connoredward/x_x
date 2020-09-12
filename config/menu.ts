@@ -15,7 +15,21 @@ export default {
       ],
     },
     {
+      title: 'Content',
+      sub: [
+        { title: 'Create new', link: '/content/create' },
+        { title: 'All posts', link: '/content' },
+      ],
+    },
+    {
+      title: 'Progress',
+      sub: [{ title: 'All progress', link: '/progress' }],
+    },
+    {
       title: 'Users',
+    },
+    {
+      title: 'Media',
     },
     {
       title: 'Settings',

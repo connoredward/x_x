@@ -8,7 +8,7 @@ import Select from '@components/Select';
 import UploadMedia from '@components/UploadMedia';
 import RadioSelect from '@components/RadioSelect';
 
-import { Post } from '../../interfaces';
+import { Content } from '../../interfaces';
 
 import styles from './styles.scss';
 
@@ -17,20 +17,17 @@ const fetcher = (url) => fetch(url).then((r) => r.json());
 
 type Props = {
   submitForm: (...args: any[]) => void;
-  removePost?: (...args: any[]) => void;
-  formData: Post;
+  formData: Content;
 };
 
-const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) => {
+const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
   const [value, setValue] = useState(formData);
   const [uploadedImg, setUploadedImg] = useState([]);
-  const [uploadedVideo, setUploadedVideo] = useState([]);
 
-  const { data, error } = useSWR(`${conf.api.url}getCategory`, fetcher);
+  const { data, error } = useSWR(`${conf.api.url}getPost`, fetcher);
 
   useEffect(() => {
     if (formData && formData.img) setUploadedImg([{ preview: formData.img }]);
-    if (formData && formData.video) setUploadedVideo([{ preview: formData.video }]);
   }, []);
 
   async function handleSubmit(event) {
@@ -40,7 +37,6 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) 
     submitForm({
       ...value,
       img: uploadedImg[0] instanceof File ? uploadedImg[0] : formData.img,
-      video: uploadedVideo[0] instanceof File ? uploadedVideo[0] : formData.video,
     });
   }
 
@@ -49,19 +45,11 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) 
     setValue((prevVal) => ({ ...prevVal, ...changedValue }));
   }
 
-  if (error || !data) return <div>Getting categories...</div>;
+  if (error || !data) return <div>Getting posts...</div>;
 
   return (
-    <form className={styles['create_post_form']} onSubmit={handleSubmit}>
+    <form className={styles['create_content_form']} onSubmit={handleSubmit}>
       <Input title={'title'} value={value.title} handleChange={handleChange} />
-      <Select
-        handleChange={handleChange}
-        name={'category'}
-        defaultValue={formData.category}
-        data={data.map(({ slug }) => {
-          return slug;
-        })}
-      />
       <Select handleChange={handleChange} name={'row'} defaultValue={formData.row || 1} data={[1, 2, 3, 4, 5, 6]} />
       <Select
         handleChange={handleChange}
@@ -75,30 +63,9 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) 
         files={uploadedImg}
         uploadType={'image'}
       />
-      <UploadMedia
-        setFile={(file) => setUploadedVideo(file)}
-        removeFile={() => setUploadedVideo([])}
-        files={uploadedVideo}
-        uploadType={'video'}
-      />
-      <RadioSelect
-        handleChange={handleChange}
-        title={'status'}
-        data={['published', 'unpublished']}
-        defaultValue={value.status}
-      />
-      <div className={styles['buttons_wrapper']}>
-        <span className={styles['submit_button']}>
-          <button type="submit">Submit</button>
-        </span>
-        <span>
-          <a href="/posts">Return</a>
-        </span>
-        {removePost && (
-          <span className={styles['remove_button']}>
-            <button onClick={removePost}>Remove</button>
-          </span>
-        )}
+      <RadioSelect title={'publish'} data={['publish', 'unpublish']} defaultValue={'publish'} />
+      <div className={styles['button_wrapper']}>
+        <button type="submit">Submit</button>
       </div>
     </form>
   );

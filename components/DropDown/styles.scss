@@ -1,0 +1,42 @@
+.profile_dropdown {
+  @apply ml-3 relative;
+
+  button {
+    @apply max-w-xs flex items-center text-sm rounded-full;
+
+    &:focus {
+      @apply outline-none;
+      // @apply shadow-solid;
+    }
+
+    >img {
+      @apply h-8 w-8 rounded-full;
+    }
+  }
+
+  .link_wrapper {
+    @apply hidden;
+    @apply origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg;
+
+    &.active {
+      @apply block;
+    }
+
+    >div {
+      @apply py-1 rounded-md bg-white shadow-xs;
+
+      >button {
+        @apply rounded-t-none rounded-b-none text-left;
+      }
+
+      >a,
+      >button {
+        @apply w-full block px-4 py-2 text-sm text-gray-700;
+
+        &:hover {
+          @apply bg-gray-100;
+        }
+      }
+    }
+  }
+}

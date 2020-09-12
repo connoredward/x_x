@@ -50,7 +50,7 @@
       }
 
       button {
-        @apply text-blue-400;
+        @apply text-blue-400 ml-2;
 
         &:hover {
           @apply text-blue-300;
@@ -97,19 +97,26 @@
       }
     }
 
+    .status_wrapper {
+      @apply flex items-center;
+
+      .status_icon {
+        @apply h-2 w-2 rounded ml-2;
+
+        &.published {
+          @apply bg-green-500;
+        }
+
+        &.unpublished {
+          @apply bg-red-500;
+        }
+      }
+    }
+
     td {
       @apply px-5 py-3 text-sm;
 
-      a,
-      button {
-        @apply text-blue-400;
-
-        &:hover {
-          @apply text-blue-300;
-        }
-      }
-
-      >span {
+      .tags_wrapper {
         @apply relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight;
 
         .tags {
@@ -118,6 +125,15 @@
 
         .tag_container {
           @apply relative;
+        }
+      }
+
+      a,
+      button {
+        @apply text-blue-400;
+
+        &:hover {
+          @apply text-blue-300;
         }
       }
 

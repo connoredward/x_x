@@ -1,0 +1,11 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+.grid_wrapper {
+  @apply grid grid-cols-3;
+
+}
+
+.grid_item {
+  @apply bg-center bg-cover bg-repeat w-full h-48;
+}

@@ -9,7 +9,7 @@ import PageHeader from '@components/PageHeader';
 import { createPost } from '../../api/posts';
 import { Context as AuthContext } from '../../store/auth';
 
-const formData = { title: '', row: 2, column: 2 };
+const formData = { title: '', row: 2, column: 2, status: 'unpublished' };
 
 const headerData = {
   breadcrumbs: [
@@ -24,9 +24,9 @@ const CreatePostPage: React.FC = () => {
   const { auth } = useContext(AuthContext);
   const router = useRouter();
 
-  async function submitForm(formData) {
-    const res = await createPost({ item: formData });
-    if (res) router.push('/posts');
+  function submitForm(formData) {
+    createPost({ post: formData });
+    router.push('/posts');
   }
 
   if (!auth) return <SplashScreen content={'Authenticating'} />;

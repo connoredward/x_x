@@ -1,86 +1,53 @@
 import { useState } from 'react';
-import getConfig from 'next/config';
-import fetch from 'unfetch';
-import useSWR from 'swr';
+import classnames from 'classnames';
 
-import Input from '@components/Input';
-import Select from '@components/Select';
+import TableFilter from '@components/Table/filter';
 
-import { deletePost } from '../../api/posts';
 import { Post } from '../../interfaces';
 
 import styles from './styles.scss';
 
-const { publicRuntimeConfig: conf } = getConfig();
-const fetcher = (url) => fetch(url).then((r) => r.json());
-
 type Props = {
+  type: string;
+  tableHeaders: string[];
   tableData: Post[];
-  openSide: (...args: any[]) => void;
+  deleteTable: (...args: any[]) => void;
+  copyTable: (...args: any[]) => void;
+  openSideModal: (...args: any[]) => void;
+  deletePost: (...args: any[]) => void;
 };
 
-const defaultFormValues = {
-  search: '',
-  category: '',
-};
-
-const TableFilter: React.FC<any> = () => {
-  const [formValues, setFormValues] = useState(defaultFormValues);
-
-  const { data, error } = useSWR(`${conf.api.url}getCategory`, fetcher);
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log(formValues);
-  }
-
-  function handleChange(event) {
-    const changedValue = { [event.target.name]: event.target.value };
-    setFormValues((prevVal) => ({ ...prevVal, ...changedValue }));
-  }
-
-  if (error || !data) return <div>Getting categories...</div>;
-  return (
-    <div className={styles['table_search']}>
-      <form onSubmit={handleSubmit}>
-        <div className={styles['inputs_container']}>
-          <Input
-            title={'search'}
-            value={formValues.search}
-            handleChange={handleChange}
-            className={styles['input_changed']}
-          />
-          <Select
-            handleChange={handleChange}
-            name={'category'}
-            data={data.map(({ slug }) => {
-              return slug;
-            })}
-            className={styles['input_changed']}
-          />
-        </div>
-        <button type="submit">Filter</button>
-      </form>
-    </div>
-  );
-};
-
-const Table: React.FC<any> = ({ tableData, openSide }: Props) => {
+const Table: React.FC<any> = ({
+  type,
+  tableHeaders,
+  tableData,
+  deleteTable,
+  copyTable,
+  openSideModal,
+  deletePost,
+}: Props) => {
   const [checkedValues, setCheckedValues] = useState([]);
 
-  function handleChange(event) {
-    event.persist();
-    const ele = document.getElementsByName('allValue')[0] as HTMLInputElement;
-    ele.checked = false;
-    if (event.target.checked) setCheckedValues((prev) => [...prev, event.target.value]);
-    else setCheckedValues((prev) => prev.filter((item) => item !== event.target.value));
+  async function deleteAll() {
+    await deleteTable(checkedValues);
+    setCheckedValues([]);
+    const allCheck = document.getElementsByName('allValue')[0] as HTMLInputElement;
+    allCheck.checked = false;
+    const checkboxes = document.getElementsByName('tableValue');
+    for (let i = 0, n = checkboxes.length; i < n; i++) {
+      const ele = checkboxes[i] as HTMLInputElement;
+      ele.checked = false;
+    }
   }
 
   function handleChangeAll(event) {
-    event.persist();
     const checkboxes = document.getElementsByName('tableValue');
     if (event.target.checked) {
-      setCheckedValues(event.target.value.split(','));
+      setCheckedValues(
+        tableData.map(({ _id }) => {
+          return _id;
+        })
+      );
       for (let i = 0, n = checkboxes.length; i < n; i++) {
         const ele = checkboxes[i] as HTMLInputElement;
         ele.checked = true;
@@ -94,15 +61,23 @@ const Table: React.FC<any> = ({ tableData, openSide }: Props) => {
     }
   }
 
+  function handleChange(event) {
+    event.persist();
+    const ele = document.getElementsByName('allValue')[0] as HTMLInputElement;
+    ele.checked = false;
+    if (event.target.checked) setCheckedValues((prev) => [...prev, event.target.value]);
+    else setCheckedValues((prev) => prev.filter((item) => item !== event.target.value));
+  }
+
   return (
     <div className={styles['table_wrapper']}>
       <TableFilter />
       <div>
         <div className={styles['table_option']}>
           <div className={styles['content']}>
-            <h1>Post Table</h1>
+            <h1>{type} Table</h1>
             <div className={styles['options']}>
-              <a href="/posts/create">+ Add</a>
+              <a href={`/${type}/create`}>+ Add</a>
             </div>
           </div>
 
@@ -111,7 +86,8 @@ const Table: React.FC<any> = ({ tableData, openSide }: Props) => {
               <p>
                 Select <span>{checkedValues.length}</span> items
               </p>
-              <button>Delete</button>
+              {checkedValues.length === 1 && <button onClick={() => copyTable(checkedValues[0])}>Copy</button>}
+              <button onClick={deleteAll}>Delete</button>
             </div>
           )}
         </div>
@@ -120,25 +96,15 @@ const Table: React.FC<any> = ({ tableData, openSide }: Props) => {
           <thead>
             <tr>
               <th>
-                <input
-                  onChange={handleChangeAll}
-                  type="checkbox"
-                  name="allValue"
-                  value={tableData.map(({ _id }) => {
-                    return _id;
-                  })}
-                />
+                <input onChange={handleChangeAll} type="checkbox" name="allValue" />
               </th>
-              <th>Name</th>
-              <th>Slug</th>
-              <th>Created at</th>
-              <th>Category</th>
-              <th></th>
+              {tableHeaders.map((item, index) => {
+                return <th key={index}>{item}</th>;
+              })}
             </tr>
           </thead>
           <tbody>
-            {tableData.map((item, index) => {
-              const { category, createdAt, title, slug, _id } = item;
+            {tableData.map(({ tag, createdAt, title, slug, _id, status }, index) => {
               return (
                 <tr key={index}>
                   <td>
@@ -153,15 +119,21 @@ const Table: React.FC<any> = ({ tableData, openSide }: Props) => {
                   <td>
                     <p>{createdAt && createdAt.substring(0, 10)}</p>
                   </td>
-                  <td>
-                    <span>
-                      <span aria-hidden className={styles['tags']}></span>
-                      <span className={styles['tag_container']}>{category}</span>
-                    </span>
+                  {tag && (
+                    <td>
+                      <span className={styles['tags_wrapper']}>
+                        <span aria-hidden className={styles['tags']}></span>
+                        <span className={styles['tag_container']}>{tag}</span>
+                      </span>
+                    </td>
+                  )}
+                  <td className={styles['status_wrapper']}>
+                    <p>{status}</p>
+                    <div className={classnames(styles['status_icon'], styles[status])} />
                   </td>
                   <td>
-                    <a href={`/posts/${_id}`}>Edit</a> | <button onClick={() => deletePost({ _id })}>Delete</button> |{' '}
-                    <button onClick={() => openSide(item)}>View</button>
+                    <a href={`/${type}/${_id}`}>Edit</a> | <button onClick={() => deletePost({ _id })}>Delete</button> |{' '}
+                    <button onClick={() => openSideModal(_id)}>View</button>
                   </td>
                 </tr>
               );
