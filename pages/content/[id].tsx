@@ -32,12 +32,12 @@ const SubContentPage: React.FC = () => {
 
   async function submitForm(formData) {
     const res = await updateContent(formData);
-    if (res) router.push('/posts');
+    if (res) router.push('/content');
   }
 
   async function removeContent(_id) {
     const res = await deleteContent({ _id });
-    if (res) router.push('/posts');
+    if (res) router.push('/content');
   }
 
   if (!auth) return <SplashScreen content={'Authenticating'} />;
