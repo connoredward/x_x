@@ -7,6 +7,7 @@ import Input from '@components/Input';
 import Select from '@components/Select';
 import UploadMedia from '@components/UploadMedia';
 import RadioSelect from '@components/RadioSelect';
+import ColourPicker from '@components/ColourPicker';
 
 import { Post } from '../../interfaces';
 
@@ -25,8 +26,6 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) 
   const [value, setValue] = useState(formData);
   const [uploadedImg, setUploadedImg] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState([]);
-
-  console.log('value', value);
 
   const { data, error } = useSWR(`${conf.api.url}getCategory`, fetcher);
 
@@ -97,6 +96,10 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) 
         title={'status'}
         data={['published', 'unpublished']}
         defaultValue={value.status}
+      />
+      <ColourPicker
+        handleChange={(event) => setValue((prevVal) => ({ ...prevVal, color: event.hex }))}
+        color={value.color}
       />
       <div className={styles['buttons_wrapper']}>
         <span className={styles['submit_button']}>

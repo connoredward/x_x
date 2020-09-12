@@ -9,7 +9,7 @@ import PageHeader from '@components/PageHeader';
 import Table from '@components/Table';
 import SideModal from '@components/SideModal';
 
-import { deletePost, createPost } from '../../api/posts';
+import { deleteContent, createContent } from '../../api/content';
 import { Context as AuthContext } from '../../store/auth';
 
 const { publicRuntimeConfig: conf } = getConfig();
@@ -18,66 +18,67 @@ const fetcher = (url) => fetch(url).then((r) => r.json());
 const headerData = {
   breadcrumbs: [
     { link: '/', title: 'Dashboard' },
-    { link: '/posts', title: 'Posts' },
+    { link: '/content', title: 'Content' },
   ],
-  title: 'All Posts',
+  title: 'All Content',
 };
 
-const tableHeaders = ['Name', 'Slug', 'Created at', 'Category', 'Status', ''];
+const tableHeaders = ['Name', 'Slug', 'Created at', 'Post', 'Status', ''];
 
-const dataFormater = (selectedId, post) => {
-  const { title, img, video, category, row, column, status, color } = post.find(({ _id }) => _id === selectedId);
-  return { title, img, video, category, row, column, status, color };
+const dataFormater = (selectedId, content) => {
+  const { title, img, video, post, row, column, status } = content.find(({ _id }) => _id === selectedId);
+  return { title, img, video, post, row, column, status };
 };
 
-const Posts: React.FC = () => {
+const Content: React.FC = () => {
   const [sideModalContent, setSideModalContent] = useState(null);
 
-  const categoryTagData = (_id) => {
-    const category = categories.find((item) => {
+  const postTagData = (_id) => {
+    const category = posts.find((item) => {
       return item._id === _id;
     });
     return { color: category?.color, title: category?.title };
   };
 
   const { auth } = useContext(AuthContext);
-  const { data: categories } = useSWR(`${conf.api.url}getCategory`, fetcher);
-  const { data: post, error } = useSWR(`${conf.api.url}getPost`);
+  const { data: posts } = useSWR(`${conf.api.url}getPost`, fetcher);
+  const { data: content, error } = useSWR(`${conf.api.url}getContent`);
+
   if (!auth) return <SplashScreen content={'Authenticating'} />;
-  if (error || !post || !categories) return <SplashScreen content={'Loading'} />;
+  if (error || !content || !posts) return <SplashScreen content={'Loading'} />;
 
   return (
     <Navigation>
       {sideModalContent && <SideModal data={sideModalContent} close={() => setSideModalContent(null)} />}
       <PageHeader {...headerData} />
       <Table
-        type={'posts'}
+        type={'content'}
         tableHeaders={tableHeaders}
-        tableData={post.map((item) => {
+        tableData={content.map((item) => {
           return {
             ...item,
-            tag: categoryTagData(item.category),
+            tag: postTagData(item.post),
           };
         })}
         deleteTable={(_ids) =>
           Promise.all(
             _ids.map((_id) => {
-              return deletePost({ _id });
+              return deleteContent({ _id });
             })
           )
         }
-        copyTable={(selectedId) => createPost({ post: dataFormater(selectedId, post) })}
+        copyTable={(selectedId) => createContent({ content: dataFormater(selectedId, content) })}
         openSideModal={(selectedId) =>
           setSideModalContent(
-            post.find(({ _id }) => {
+            content.find(({ _id }) => {
               return _id === selectedId;
             })
           )
         }
-        deletePost={(_id) => deletePost({ _id })}
+        deletePost={(_id) => deleteContent({ _id })}
       />
     </Navigation>
   );
 };
 
-export default Posts;
+export default Content;

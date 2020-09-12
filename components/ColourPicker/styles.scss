@@ -22,6 +22,6 @@
   }
 
   .colour_modal {
-    @apply fixed;
+    @apply absolute z-50;
   }
 }

@@ -2,31 +2,31 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 import Navigation from '@components/Navigation';
-import CreateForm from '@components/Forms/createPost';
+import CreateForm from '@components/Forms/createContent';
 import SplashScreen from '@components/Splash';
 import PageHeader from '@components/PageHeader';
 
-import { createPost } from '../../api/posts';
+import { createContent } from '../../api/content';
 import { Context as AuthContext } from '../../store/auth';
 
-const formData = { title: '', row: 2, column: 2, status: 'unpublished', color: '#2ccce4' };
+const formData = { title: '', row: 2, column: 2, status: 'unpublished' };
 
 const headerData = {
   breadcrumbs: [
     { link: '/', title: 'Dashboard' },
-    { link: '/posts', title: 'Posts' },
-    { link: '/posts/create', title: 'Create' },
+    { link: '/content', title: 'Content' },
+    { link: '/content/create', title: 'Create' },
   ],
-  title: 'Create Post',
+  title: 'Create Content',
 };
 
-const CreatePostPage: React.FC = () => {
+const CreateContentPage: React.FC = () => {
   const { auth } = useContext(AuthContext);
   const router = useRouter();
 
   function submitForm(formData) {
-    createPost({ post: formData });
-    router.push('/posts');
+    createContent({ content: formData });
+    router.push('/content');
   }
 
   if (!auth) return <SplashScreen content={'Authenticating'} />;
@@ -39,4 +39,4 @@ const CreatePostPage: React.FC = () => {
   );
 };
 
-export default CreatePostPage;
+export default CreateContentPage;

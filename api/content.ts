@@ -1,18 +1,15 @@
 import getConfig from 'next/config';
 import fetch from 'isomorphic-unfetch';
 
+import { Content } from '../interfaces';
+
 const { publicRuntimeConfig: conf } = getConfig();
 
 type Props = {
-  content: {
-    title: string;
-    img?: File | string;
-    post: string;
-  };
-  _id: string;
+  content: Content;
 };
 
-export const createContent = (content: Props): Promise<void | boolean> => {
+export const createContent = ({ content }: Props): Promise<void | boolean> => {
   const formData = new FormData();
   for (const key in content) formData.append(key, content[key]);
   return fetch(`${conf.api.url}createContent`, {
@@ -27,7 +24,7 @@ export const createContent = (content: Props): Promise<void | boolean> => {
     });
 };
 
-export const deleteContent = (_id: Props): Promise<void | boolean> => {
+export const deleteContent = ({ _id }: { _id: string }): Promise<void | boolean> => {
   return fetch(`${conf.api.url}deleteContent/${_id}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },

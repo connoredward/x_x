@@ -17,14 +17,13 @@ const fetcher = (url) => fetch(url).then((r) => r.json());
 
 type Props = {
   submitForm: (...args: any[]) => void;
+  removeContent?: (...args: any[]) => void;
   formData: Content;
 };
 
-const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
+const CreateForm: React.FC<any> = ({ submitForm, removeContent, formData }: Props) => {
   const [value, setValue] = useState(formData);
   const [uploadedImg, setUploadedImg] = useState([]);
-
-  const { data, error } = useSWR(`${conf.api.url}getPost`, fetcher);
 
   useEffect(() => {
     if (formData && formData.img) setUploadedImg([{ preview: formData.img }]);
@@ -45,17 +44,35 @@ const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
     setValue((prevVal) => ({ ...prevVal, ...changedValue }));
   }
 
-  if (error || !data) return <div>Getting posts...</div>;
+  const { data: posts, error } = useSWR(`${conf.api.url}getPost`, fetcher);
+  if (error || !posts) return <div>Getting posts...</div>;
 
   return (
-    <form className={styles['create_content_form']} onSubmit={handleSubmit}>
+    <form className={styles['create_post_form']} onSubmit={handleSubmit}>
       <Input title={'title'} value={value.title} handleChange={handleChange} />
-      <Select handleChange={handleChange} name={'row'} defaultValue={formData.row || 1} data={[1, 2, 3, 4, 5, 6]} />
+      <Select
+        handleChange={handleChange}
+        name={'post'}
+        defaultValue={formData.post}
+        data={posts.map(({ slug, _id }) => {
+          return { value: slug, _id };
+        })}
+      />
+      <Select
+        handleChange={handleChange}
+        name={'row'}
+        defaultValue={formData.row || 1}
+        data={[1, 2, 3, 4, 5, 6].map((value) => {
+          return { value };
+        })}
+      />
       <Select
         handleChange={handleChange}
         name={'column'}
         defaultValue={formData.column || 1}
-        data={[1, 2, 3, 4, 5, 6]}
+        data={[1, 2, 3, 4, 5, 6].map((value) => {
+          return { value };
+        })}
       />
       <UploadMedia
         setFile={(file) => setUploadedImg(file)}
@@ -63,9 +80,24 @@ const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
         files={uploadedImg}
         uploadType={'image'}
       />
-      <RadioSelect title={'publish'} data={['publish', 'unpublish']} defaultValue={'publish'} />
-      <div className={styles['button_wrapper']}>
-        <button type="submit">Submit</button>
+      <RadioSelect
+        handleChange={handleChange}
+        title={'status'}
+        data={['published', 'unpublished']}
+        defaultValue={value.status}
+      />
+      <div className={styles['buttons_wrapper']}>
+        <span className={styles['submit_button']}>
+          <button type="submit">Submit</button>
+        </span>
+        <span>
+          <a href="/content">Return</a>
+        </span>
+        {removeContent && (
+          <span className={styles['remove_button']}>
+            <button onClick={removeContent}>Remove</button>
+          </span>
+        )}
       </div>
     </form>
   );

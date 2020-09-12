@@ -11,6 +11,7 @@ export type Post = {
   column?: number;
   status?: string;
   uploadStatus?: string;
+  color?: string;
   tag?: {
     title?: string;
     color?: string;
@@ -30,7 +31,6 @@ export type Content = {
   img?: string;
   row?: number;
   column?: number;
-  published?: string;
   status?: string;
   createdAt?: string;
   updatedAt?: string;
