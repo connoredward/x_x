@@ -1,0 +1,27 @@
+.colour_picker_wrapper {
+  @apply flex items-center mb-2;
+
+  .label_container {
+    @apply w-1/4 text-right;
+
+    label {
+      @apply block text-gray-700 text-sm;
+    }
+  }
+
+  .colour_picker_container {
+    @apply w-1/2;
+
+    >button {
+      @apply ml-2 w-24 p-2 shadow;
+    }
+
+    .button_colour {
+      @apply w-full h-3;
+    }
+  }
+
+  .colour_modal {
+    @apply fixed;
+  }
+}

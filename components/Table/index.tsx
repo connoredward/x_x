@@ -6,6 +6,7 @@ import TableFilter from '@components/Table/filter';
 import { Post } from '../../interfaces';
 
 import styles from './styles.scss';
+import { table } from 'console';
 
 type Props = {
   type: string;
@@ -27,6 +28,7 @@ const Table: React.FC<any> = ({
   deletePost,
 }: Props) => {
   const [checkedValues, setCheckedValues] = useState([]);
+  console.log(tableData);
 
   async function deleteAll() {
     await deleteTable(checkedValues);
@@ -105,6 +107,7 @@ const Table: React.FC<any> = ({
           </thead>
           <tbody>
             {tableData.map(({ tag, createdAt, title, slug, _id, status }, index) => {
+              console.log('tag', tag);
               return (
                 <tr key={index}>
                   <td>
@@ -121,9 +124,9 @@ const Table: React.FC<any> = ({
                   </td>
                   {tag && (
                     <td>
-                      <span className={styles['tags_wrapper']}>
-                        <span aria-hidden className={styles['tags']}></span>
-                        <span className={styles['tag_container']}>{tag}</span>
+                      <span className={styles['tags_wrapper']} style={{ color: tag.color }}>
+                        <span aria-hidden className={styles['tags']} style={{ backgroundColor: tag.color }}></span>
+                        <span className={styles['tag_container']}>{tag.title}</span>
                       </span>
                     </td>
                   )}

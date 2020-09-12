@@ -11,7 +11,10 @@ export type Post = {
   column?: number;
   status?: string;
   uploadStatus?: string;
-  tag?: string;
+  tag?: {
+    title?: string;
+    color?: string;
+  };
 };
 
 export type User = {

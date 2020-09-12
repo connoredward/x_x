@@ -5,52 +5,52 @@ import fetch from 'unfetch';
 import useSWR from 'swr';
 
 import Navigation from '@components/Navigation';
+import UpdateForm from '@components/Forms/createCategory';
 import SplashScreen from '@components/Splash';
+import PageHeader from '@components/PageHeader';
 
 import { Context as AuthContext } from '../../store/auth';
+import { updateCategory, deleteCategory } from '../../api/category';
 
 const { publicRuntimeConfig: conf } = getConfig();
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
-type Props = {
-  slug: string;
-};
-
-const Content: React.FC<any> = ({ slug }: Props) => {
-  const { data, error } = useSWR(`${conf.api.url}getPost`, fetcher);
-  if (error || !data) return <div>Loading...</div>;
-  return (
-    <div>
-      {data
-        .filter(({ category }) => category === slug)
-        .map(({ title, category, _id }, index) => {
-          return (
-            <div key={index}>
-              <p>
-                {title} - {category}
-              </p>
-              <a href={`/posts/${_id}`}>edit post...</a>
-            </div>
-          );
-        })}
-    </div>
-  );
+const headerData = {
+  breadcrumbs: [
+    { link: '/', title: 'Dashboard' },
+    { link: '/category', title: 'Category' },
+    { link: '/category/create', title: 'Create' },
+  ],
+  title: 'Edit Category',
 };
 
 const SubCategoryPage: React.FC = () => {
   const router = useRouter();
-  const { slug } = router.query;
+  const { id } = router.query;
   const { auth } = useContext(AuthContext);
-  const { data, error } = useSWR(`${conf.api.url}getCategory/${slug}`, fetcher);
+  const { data: category, error } = useSWR(`${conf.api.url}getCategory/${id}`, fetcher);
+
+  async function submitForm(formData) {
+    const res = await updateCategory(formData);
+    if (res) router.push('/category');
+  }
+
+  async function removeCategory(_id) {
+    const res = await deleteCategory({ _id });
+    if (res) router.push('/category');
+  }
 
   if (!auth) return <SplashScreen content={'Authenticating'} />;
-  if (error || !data) return <SplashScreen content={'Loading'} />;
+  if (error || !category) return <SplashScreen content={'Loading'} />;
 
   return (
     <Navigation>
-      <a href={`/category/settings/${slug}`}>Edit category settings</a>
-      <a href="/posts/create">Add post</a>
-      <Content slug={slug} />
+      <PageHeader {...headerData} />
+      <UpdateForm
+        formData={category}
+        submitForm={(formData) => submitForm(formData)}
+        removeCategory={() => removeCategory(category._id)}
+      />
     </Navigation>
   );
 };

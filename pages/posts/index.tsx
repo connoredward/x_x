@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import getConfig from 'next/config';
+import fetch from 'unfetch';
 import useSWR from 'swr';
 
 import Navigation from '@components/Navigation';
@@ -12,6 +13,7 @@ import { deletePost, createPost } from '../../api/posts';
 import { Context as AuthContext } from '../../store/auth';
 
 const { publicRuntimeConfig: conf } = getConfig();
+const fetcher = (url) => fetch(url).then((r) => r.json());
 
 const headerData = {
   breadcrumbs: [
@@ -31,10 +33,18 @@ const dataFormater = (selectedId, post) => {
 const Posts: React.FC = () => {
   const [sideModalContent, setSideModalContent] = useState(null);
 
+  const categoryTagData = (_id) => {
+    const category = categories.find((item) => {
+      return item._id === _id;
+    });
+    return { color: category.color, title: category.title };
+  };
+
   const { auth } = useContext(AuthContext);
+  const { data: categories } = useSWR(`${conf.api.url}getCategory`, fetcher);
   const { data: post, error } = useSWR(`${conf.api.url}getPost`);
   if (!auth) return <SplashScreen content={'Authenticating'} />;
-  if (error || !post) return <SplashScreen content={'Loading'} />;
+  if (error || !post || !categories) return <SplashScreen content={'Loading'} />;
 
   return (
     <Navigation>
@@ -44,14 +54,17 @@ const Posts: React.FC = () => {
         type={'posts'}
         tableHeaders={tableHeaders}
         tableData={post.map((item) => {
-          return { ...item, tag: item.category };
+          return {
+            ...item,
+            tag: categoryTagData(item.category),
+          };
         })}
         deleteTable={(_ids) =>
-          Promise.all([
+          Promise.all(
             _ids.map((_id) => {
               return deletePost({ _id });
-            }),
-          ])
+            })
+          )
         }
         copyTable={(selectedId) => createPost({ post: dataFormater(selectedId, post) })}
         openSideModal={(selectedId) =>

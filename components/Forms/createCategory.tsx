@@ -2,18 +2,21 @@ import { useState } from 'react';
 
 import Input from '@components/Input';
 import RadioSelect from '@components/RadioSelect';
+import ColourPicker from '@components/ColourPicker';
 
 import styles from './styles.scss';
 
 type Props = {
   submitForm: (...args: any[]) => void;
+  removeCategory: (...args: any[]) => void;
   formData: {
     title: string;
     status: string;
+    color: string;
   };
 };
 
-const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
+const CreateForm: React.FC<any> = ({ submitForm, formData, removeCategory }: Props) => {
   const [value, setValue] = useState(formData);
 
   async function handleSubmit(event) {
@@ -23,7 +26,6 @@ const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
 
   function handleChange(event) {
     const changedValue = { [event.target.name]: event.target.value };
-    console.log(changedValue);
     setValue((prevVal) => ({ ...prevVal, ...changedValue }));
   }
 
@@ -36,6 +38,11 @@ const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
         data={['published', 'unpublished']}
         defaultValue={value.status}
       />
+      <ColourPicker
+        handleChange={(event) => setValue((prevVal) => ({ ...prevVal, color: event.hex }))}
+        color={value.color}
+      />
+
       <div className={styles['buttons_wrapper']}>
         <span className={styles['submit_button']}>
           <button type="submit">Submit</button>
@@ -43,6 +50,11 @@ const CreateForm: React.FC<any> = ({ submitForm, formData }: Props) => {
         <span>
           <a href="/category">Return</a>
         </span>
+        {removeCategory && (
+          <span className={styles['remove_button']}>
+            <button onClick={removeCategory}>Remove</button>
+          </span>
+        )}
       </div>
     </form>
   );

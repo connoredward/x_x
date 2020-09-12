@@ -26,6 +26,8 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) 
   const [uploadedImg, setUploadedImg] = useState([]);
   const [uploadedVideo, setUploadedVideo] = useState([]);
 
+  console.log('value', value);
+
   const { data, error } = useSWR(`${conf.api.url}getCategory`, fetcher);
 
   useEffect(() => {
@@ -58,16 +60,25 @@ const CreateForm: React.FC<any> = ({ submitForm, formData, removePost }: Props) 
         handleChange={handleChange}
         name={'category'}
         defaultValue={formData.category}
-        data={data.map(({ slug }) => {
-          return slug;
+        data={data.map(({ slug, _id }) => {
+          return { value: slug, _id };
         })}
       />
-      <Select handleChange={handleChange} name={'row'} defaultValue={formData.row || 1} data={[1, 2, 3, 4, 5, 6]} />
+      <Select
+        handleChange={handleChange}
+        name={'row'}
+        defaultValue={formData.row || 1}
+        data={[1, 2, 3, 4, 5, 6].map((item) => {
+          return { value: item };
+        })}
+      />
       <Select
         handleChange={handleChange}
         name={'column'}
         defaultValue={formData.column || 1}
-        data={[1, 2, 3, 4, 5, 6]}
+        data={[1, 2, 3, 4, 5, 6].map((item) => {
+          return { value: item };
+        })}
       />
       <UploadMedia
         setFile={(file) => setUploadedImg(file)}

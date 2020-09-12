@@ -24,8 +24,8 @@ const headerData = {
 const tableHeaders = ['Name', 'Slug', 'Created at', 'status', ''];
 
 const dataFormater = (selectedId, categories) => {
-  const { title, status } = categories.find(({ _id }) => _id === selectedId);
-  return { title, status };
+  const { title, status, color } = categories.find(({ _id }) => _id === selectedId);
+  return { title, status, color };
 };
 
 const Categories: React.FC = () => {

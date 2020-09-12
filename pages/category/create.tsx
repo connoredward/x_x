@@ -9,7 +9,7 @@ import PageHeader from '@components/PageHeader';
 import { createCategory } from '../../api/category';
 import { Context as AuthContext } from '../../store/auth';
 
-const formData = { title: '', status: 'unpublished' };
+const formData = { title: '', status: 'unpublished', color: '#2ccce4' };
 
 const headerData = {
   breadcrumbs: [

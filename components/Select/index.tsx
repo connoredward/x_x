@@ -6,7 +6,10 @@ type Props = {
   handleChange: (...args: any[]) => void;
   name: string;
   defaultValue: string;
-  data: string[];
+  data: {
+    value: string;
+    _id?: string;
+  }[];
   className?: string;
 };
 
@@ -19,13 +22,15 @@ const Select: React.FC<any> = ({ handleChange, name, defaultValue, data, classNa
       <div className={styles['drop_down_wrapper']}>
         <select name={name} onChange={handleChange}>
           <option></option>
-          {data.map((item, idx) => {
-            return (
-              <option selected={item == defaultValue ? true : false} key={idx}>
-                {item}
-              </option>
-            );
-          })}
+          {data.map(({ value, _id }, index) => (
+            <option
+              key={index}
+              value={_id || value}
+              selected={value == defaultValue || _id == defaultValue ? true : false}
+            >
+              {value}
+            </option>
+          ))}
         </select>
         <div className={styles['icon_wrapper']}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
